@@ -1,6 +1,6 @@
 # nawalapatra_mobile
 
-A new Flutter project.
+Berita Acara kami dapat dilihat melalui link [berikut.](https://docs.google.com/spreadsheets/d/1DGLs_WakaCFOlIHw1fgt20vvZ-bWXzsQ/edit?usp=sharing&ouid=105632398927722211424&rtpof=true&sd=true)
 
 ## Getting Started
 
