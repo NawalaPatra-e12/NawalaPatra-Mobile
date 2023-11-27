@@ -52,7 +52,12 @@ Sebuah section dimana User Login dapat melakukan submisi karya atau buku setiap 
 | Writer's Jam | Dapat mengunggah karya pada prompt yang diberikan di minggu tersebut | Dapat melihat prompt minggu ini dan karya penulis, tetapi tidak bisa  berpartisipasi dalam writer's jam. |
 
 ## *Alur pengintegrasian dengan web service untuk terhubung dengan aplikasi web yang sudah dibuat saat Proyek Tengah Semester*
-
+1. Menambahkan dependency http ke dalam proyek untuk memungkinkan pertukaran data melalui HTTP request.
+2. Membuat model sesuai dengan respons yang diterima dari data yang berasal dari layanan web. Model ini dirancang agar sesuai dengan struktur data JSON yang diperoleh.
+3. Dengan menggunakan dependensi http, kami melakukan pengambilan data dari layanan web menggunakan metode HTTP GET.
+4. Melakukan konversi data. Data JSON yang diterima dikonversikan ke dalam objek Dart yang sesuai dengan model yang telah kami buat sebelumnya.
+5. Menggunakan widget FutureBuilder untuk menampilkan data dengan efisien. Widget ini memungkinkan kami untuk menangani proses asynchronous dan menampilkan data dengan baik di dalam aplikasi kami.
+6. Mengimplementasikan autentikasi menggunakan package pbp_django_auth. Langkah ini memastikan bahwa pengguna hanya dapat mengakses fitur tertentu setelah berhasil melakukan autentikasi.
 
 ## *Menambahkan tautan berita acara ke README.md*
 
