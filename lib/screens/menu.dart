@@ -7,6 +7,7 @@ class MyHomePage extends StatelessWidget {
 
   final List<NavItem> items = [
     NavItem("Library", Icons.checklist, const Color(0xff7f5478)),
+    NavItem("Logout", Icons.logout, const Color(0xff7f5478)),
   ];
 
   // This widget is the home page of your application. It is stateful, meaning

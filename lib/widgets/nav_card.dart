@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:nawalapatra_mobile/screens/login.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:nawalapatra_mobile/library/book_list.dart';
@@ -36,6 +37,25 @@ class NavCard extends StatelessWidget {
           if (item.name == "Library") {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const BooklistPage()));
+          } else if (item.name == "Logout") {
+            final response = await request.logout(
+                // DO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                "https://nawalapatra.pythonanywhere.com/auth/logout/");
+            String message = response["message"];
+            if (response['status']) {
+              String uname = response["username"];
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("$message Sampai jumpa, $uname."),
+              ));
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("$message"),
+              ));
+            }
           }
         },
         child: Container(
