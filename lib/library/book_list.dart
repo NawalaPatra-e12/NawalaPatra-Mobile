@@ -5,6 +5,8 @@ import 'package:nawalapatra_mobile/models/book.dart';
 
 import 'package:nawalapatra_mobile/widgets/left_drawer.dart';
 
+String urlToParse = 'https://nawalapatra.pythonanywhere.com/library/json';
+
 class BooklistPage extends StatefulWidget {
   const BooklistPage({Key? key}) : super(key: key);
 
@@ -13,9 +15,9 @@ class BooklistPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<BooklistPage> {
-  Future<List<Book>> fetchBook() async {
+  Future<List<Book>> fetchBook(String parseUrl) async {
     // DO: Ganti URL
-    var url = Uri.parse('https://nawalapatra.pythonanywhere.com/library/json');
+    var url = Uri.parse(parseUrl);
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -39,10 +41,20 @@ class _ProductPageState extends State<BooklistPage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Product'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                urlToParse =
+                    "https://nawalapatra.pythonanywhere.com/library/filter-json/2/";
+                setState(() {});
+              },
+              child: const Text("Filter 1"),
+            ),
+          ],
         ),
         drawer: const LeftDrawer(),
         body: FutureBuilder(
-            future: fetchBook(),
+            future: fetchBook(urlToParse),
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
                 return const Center(child: CircularProgressIndicator());
