@@ -24,7 +24,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'NawalaPatra Mobile',
+          'NawalaPatra',
         ),
         backgroundColor: const Color(0xff3e2f48), //added colour for appbar!
         foregroundColor: Colors.white,
