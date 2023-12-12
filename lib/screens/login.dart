@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const LoginApp());
-}
+// void main() {
+//   runApp(const LoginApp());
+// }
 
 class LoginApp extends StatelessWidget {
   const LoginApp({super.key});
@@ -17,7 +17,7 @@ class LoginApp extends StatelessWidget {
     return MaterialApp(
       title: 'Login',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
       home: const LoginPage(),
     );
