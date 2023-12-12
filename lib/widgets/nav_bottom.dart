@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nawalapatra_mobile/library/book_list.dart';
+import 'package:nawalapatra_mobile/profile/profile.dart';
 import 'package:nawalapatra_mobile/screens/menu.dart';
+// import 'package:nawalapatra_mobile/screens/login.dart';
 
 
 class NavigationBarApp extends StatelessWidget {
@@ -19,7 +21,7 @@ class NavigationBarApp extends StatelessWidget {
               Navigator.push(context, MaterialPageRoute(builder: (context) => BooklistPage()));
               break;
             case 2:
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
               break;
           }
         },
