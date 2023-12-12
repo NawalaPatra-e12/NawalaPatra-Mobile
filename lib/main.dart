@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:nawalapatra_mobile/screens/login.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 // import 'package:sylladex_mobile/screens/login.dart';
-import 'package:nawalapatra_mobile/common/menu.dart';
+// import 'package:nawalapatra_mobile/common/menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,9 +12,8 @@ void main() {
 String username_global = "";
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return Provider(
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
                 ColorScheme.fromSeed(seedColor: const Color(0xff3e2f48)),
             useMaterial3: true,
           ),
-          home: MyHomePage(),
+          home: LoginPage(),
         ));
   }
 }
