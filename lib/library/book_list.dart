@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:nawalapatra_mobile/models/book.dart';
 import 'package:nawalapatra_mobile/widgets/left_drawer.dart';
+import 'package:nawalapatra_mobile/widgets/nav_bottom.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String urlToParse = 'https://nawalapatra.pythonanywhere.com/library/json';
@@ -218,6 +219,8 @@ class _ProductPageState extends State<BooklistPage> {
                   );
                 }
               }
-            }));
+            }),
+            bottomNavigationBar: NavigationBarApp(),
+            );
   }
 }

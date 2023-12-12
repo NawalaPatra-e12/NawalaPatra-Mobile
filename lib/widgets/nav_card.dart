@@ -5,6 +5,7 @@ import 'package:nawalapatra_mobile/screens/login.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:nawalapatra_mobile/library/book_list.dart';
+import 'package:nawalapatra_mobile/writersjam/writer.dart';
 
 class NavItem {
   final String name;
@@ -56,6 +57,10 @@ class NavCard extends StatelessWidget {
                 content: Text("$message"),
               ));
             }
+          }
+          if (item.name == "Writers Jam") {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const StoryListPage()));
           }
         },
         child: Container(

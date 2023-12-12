@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nawalapatra_mobile/screens/menu.dart';
 import 'package:nawalapatra_mobile/library/book_list.dart';
+import 'package:nawalapatra_mobile/writersjam/writer.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -61,6 +62,18 @@ class LeftDrawer extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BooklistPage(),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.draw_sharp),
+            title: const Text('Writers Jam'),
+            // Bagian redirection ke MyHomePage
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StoryListPage(),
                   ));
             },
           ),
