@@ -4,24 +4,40 @@
 
 import 'dart:convert';
 
-List<Bookmark> bookmarkFromJson(String str) => List<Bookmark>.from(json.decode(str).map((x) => Bookmark.fromJson(x)));
+Bookmark bookmarkFromJson(String str) => Bookmark.fromJson(json.decode(str));
 
-String bookmarkToJson(List<Bookmark> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String bookmarkToJson(Bookmark data) => json.encode(data.toJson());
 
 class Bookmark {
+    List<Result> result;
+
+    Bookmark({
+        required this.result,
+    });
+
+    factory Bookmark.fromJson(Map<String, dynamic> json) => Bookmark(
+        result: List<Result>.from(json["result"].map((x) => Result.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "result": List<dynamic>.from(result.map((x) => x.toJson())),
+    };
+}
+
+class Result {
     int pk;
     int user;
     Book book;
     String review;
 
-    Bookmark({
+    Result({
         required this.pk,
         required this.user,
         required this.book,
         required this.review,
     });
 
-    factory Bookmark.fromJson(Map<String, dynamic> json) => Bookmark(
+    factory Result.fromJson(Map<String, dynamic> json) => Result(
         pk: json["pk"],
         user: json["user"],
         book: Book.fromJson(json["book"]),
