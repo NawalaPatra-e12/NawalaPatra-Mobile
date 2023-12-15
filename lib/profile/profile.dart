@@ -7,7 +7,6 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:nawalapatra_mobile/screens/login.dart';
 
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -21,7 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final request = context.watch<CookieRequest>();
     String uname = "User";
 
-    if (request.loggedIn){
+    if (request.loggedIn) {
       uname = request.jsonData["username"];
     }
 
@@ -31,7 +30,6 @@ class _ProfilePageState extends State<ProfilePage> {
           padding: const EdgeInsets.all(40),
           child: Column(
             children: [
-              
               if (!request.loggedIn) ...[
                 Stack(
                   children: [
@@ -44,16 +42,16 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 10),
                 Text('User', style: Theme.of(context).textTheme.headlineMedium),
                 const SizedBox(height: 20),
-
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.pink[100],
-                    borderRadius: BorderRadius.circular(15.0), // Adjust the radius to your liking
+                    borderRadius: BorderRadius.circular(
+                        15.0), // Adjust the radius to your liking
                   ),
                   child: ListTile(
                     onTap: () {
                       Navigator.pushReplacement(
-                        context, 
+                        context,
                         MaterialPageRoute(builder: (context) => LoginApp()),
                       );
                     },
@@ -61,11 +59,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 10),
-
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.pink[100],
-                    borderRadius: BorderRadius.circular(15.0), // Adjust the radius to your liking
+                    borderRadius: BorderRadius.circular(
+                        15.0), // Adjust the radius to your liking
                   ),
                   child: ListTile(
                     onTap: () {
@@ -78,10 +76,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 10),
-
               ] else ...[
                 /// -- MENU
-                
+
                 Stack(
                   children: [
                     CircleAvatar(
@@ -97,12 +94,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.pink[100],
-                    borderRadius: BorderRadius.circular(15.0), // Adjust the radius to your liking
+                    borderRadius: BorderRadius.circular(
+                        15.0), // Adjust the radius to your liking
                   ),
                   child: ListTile(
                     onTap: () {
                       Navigator.pushReplacement(
-                        context, 
+                        context,
                         MaterialPageRoute(builder: (context) => BooklistPage()),
                       );
                     },
@@ -114,12 +112,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.pink[100],
-                    borderRadius: BorderRadius.circular(15.0), // Adjust the radius to your liking
+                    borderRadius: BorderRadius.circular(
+                        15.0), // Adjust the radius to your liking
                   ),
                   child: ListTile(
                     onTap: () {
                       Navigator.pushReplacement(
-                        context, 
+                        context,
                         MaterialPageRoute(builder: (context) => BookmarkPage()),
                       );
                     },
@@ -131,13 +130,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.pink[100],
-                    borderRadius: BorderRadius.circular(15.0), // Adjust the radius to your liking
+                    borderRadius: BorderRadius.circular(
+                        15.0), // Adjust the radius to your liking
                   ),
                   child: ListTile(
                     onTap: () async {
                       final response = await request.logout(
-                        "https://nawalapatra.pythonanywhere.com/auth/logout/"
-                      );
+                          "https://nawalapatra.pythonanywhere.com/auth/logout/");
                       String message = response["message"];
                       if (response['status']) {
                         String uname = response["username"];
@@ -157,7 +156,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     title: Text('Logout'),
                   ),
                 ),
-
               ],
             ],
           ),
