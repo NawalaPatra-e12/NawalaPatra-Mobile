@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:nawalapatra_mobile/widgets/left_drawer.dart';
 import 'package:nawalapatra_mobile/widgets/nav_card.dart';
+import 'package:nawalapatra_mobile/widgets/nav_bottom.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
 
   final List<NavItem> items = [
     NavItem("Library", Icons.checklist, const Color(0xff7f5478)),
+    NavItem("Writers Jam", Icons.draw_sharp, const Color(0xff7f5478)),
+    NavItem("Logout", Icons.logout, const Color(0xff7f5478)),
   ];
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -23,7 +26,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'NawalaPatra Mobile',
+          'NawalaPatra',
         ),
         backgroundColor: const Color(0xff3e2f48), //added colour for appbar!
         foregroundColor: Colors.white,
@@ -66,6 +69,7 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: NavigationBarApp(),
     );
   }
 }
