@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nawalapatra_mobile/library/book_list.dart';
+import 'package:nawalapatra_mobile/mybooks/bookmark_list.dart';
 import 'package:nawalapatra_mobile/screens/menu.dart';
 import 'package:nawalapatra_mobile/widgets/nav_bottom.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -116,7 +117,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     borderRadius: BorderRadius.circular(15.0), // Adjust the radius to your liking
                   ),
                   child: ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context, 
+                        MaterialPageRoute(builder: (context) => BookmarkPage()),
+                      );
+                    },
                     title: Text('My Books'),
                   ),
                 ),
