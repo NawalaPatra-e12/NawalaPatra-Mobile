@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:nawalapatra_mobile/models/book.dart';
 import 'package:nawalapatra_mobile/widgets/left_drawer.dart';
 import 'package:nawalapatra_mobile/widgets/nav_bottom.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String urlToParse = 'https://nawalapatra.pythonanywhere.com/library/json';
@@ -94,133 +96,184 @@ class _ProductPageState extends State<BooklistPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    String uname = "User";
+
+    if (request.loggedIn) {
+      uname = request.jsonData["username"];
+    }
+
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('NawalaPatra'),
-        ),
-        drawer: const LeftDrawer(),
-        body: FutureBuilder(
-            future: fetchBook(urlToParse),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.data == null) {
-                return const Center(child: CircularProgressIndicator());
+      appBar: AppBar(
+        title: const Text('NawalaPatra'),
+      ),
+      drawer: const LeftDrawer(),
+      body: FutureBuilder(
+          future: fetchBook(urlToParse),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.data == null) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Column(
+                  children: [
+                    Text(
+                      'Library',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      "Tidak ada data produk.",
+                      style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                    ),
+                    SizedBox(height: 8),
+                  ],
+                );
               } else {
-                if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Column(
-                    children: [
-                      Text(
-                        'Library',
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        "Tidak ada data produk.",
-                        style:
-                            TextStyle(color: Color(0xff59A5D8), fontSize: 20),
-                      ),
-                      SizedBox(height: 8),
-                    ],
-                  );
-                } else {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Library',
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Library',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              const Text(
+                                'Filter by Genre:',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  // fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            DropdownButton<String>(
-                              value: selectedOption,
-                              icon: const Icon(Icons.arrow_drop_down),
-                              iconSize: 24,
-                              elevation: 16,
-                              style: const TextStyle(
-                                  color: Colors.blue, fontSize: 18),
-                              onChanged: (String? newValue) {
-                                if (newValue != null) {
-                                  setState(() {
-                                    selectedOption =
-                                        newValue; // Update selectedOption using setState()
-                                  });
-                                  updateUrlToParse(newValue);
-                                }
-                              },
-                              items: options.map<DropdownMenuItem<String>>(
-                                (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
+                              const SizedBox(width: 20),
+                              DropdownButton<String>(
+                                value: selectedOption,
+                                icon: const Icon(Icons.arrow_drop_down),
+                                iconSize: 16,
+                                elevation: 16,
+                                style: const TextStyle(
+                                    color: Colors.blue, fontSize: 18),
+                                onChanged: (String? newValue) {
+                                  if (newValue != null) {
+                                    setState(() {
+                                      selectedOption =
+                                          newValue; // Update selectedOption using setState()
+                                    });
+                                    updateUrlToParse(newValue);
+                                  }
                                 },
-                              ).toList(),
-                            ),
-                          ],
-                        ),
+                                items: options.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  },
+                                ).toList(),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      Expanded(
-                          child: ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (_, index) => Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        // Left: Image
-                                        Container(
-                                          width: 100,
-                                          child: Image.network(
-                                            "${snapshot.data![index].fields.imageUrl}",
-                                            fit: BoxFit.cover,
-                                          ),
+                    ),
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (_, index) => Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Left: Image
+                                      Container(
+                                        width: 100,
+                                        child: Image.network(
+                                          "${snapshot.data![index].fields.imageUrl}",
+                                          fit: BoxFit.cover,
                                         ),
+                                      ),
 
-                                        const SizedBox(height: 10),
-                                        const SizedBox(width: 20),
+                                      const SizedBox(height: 10),
+                                      const SizedBox(width: 20),
 
-                                        // Right: Text
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "${snapshot.data![index].fields.title}",
-                                                style: const TextStyle(
-                                                  fontSize: 18.0,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                      // Right: Text
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${snapshot.data![index].fields.title}",
+                                              style: const TextStyle(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold,
                                               ),
-                                              const SizedBox(height: 10),
-                                              Text(
-                                                  "${snapshot.data![index].fields.author}"),
-                                              const SizedBox(height: 10),
-                                              Text(
-                                                  "${snapshot.data![index].fields.category}"),
-                                            ],
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                                "Author: ${snapshot.data![index].fields.author}"),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                                "Genre: ${snapshot.data![index].fields.category}"),
+                                          ],
+                                        ),
+                                      ),
+
+                                      if (request.loggedIn) ...[
+                                        Container(
+                                          width: 200,
+                                          child: ElevatedButton(
+                                            onPressed: () async {
+                                              // print("${index}");
+                                              int book_id = index;
+
+                                              final response = await request.postJson(
+                                                  'https://nawalapatra.pythonanywhere.com/library/bookmark-flutter/',
+                                                  jsonEncode(<String, int>{
+                                                    'index': book_id,
+                                                  })
+                                                  // You can include headers or other necessary data here
+                                                  );
+                                              if (response['status'] ==
+                                                  'success') {
+                                                ScaffoldMessenger.of(context)
+                                                  ..hideCurrentSnackBar()
+                                                  ..showSnackBar(SnackBar(
+                                                      content: Text(
+                                                          'You have successfully bookmarked "${snapshot.data![index].fields.title}" !')));
+                                              } else {
+                                                // Handle other status codes (if needed)
+                                                print(
+                                                    'Failed to bookmark. Status code: ${response.statusCode}');
+                                              }
+                                            },
+                                            child: const Text('Bookmark'),
                                           ),
                                         ),
                                       ],
-                                    ),
-                                  ))),
-                    ],
-                  );
-                }
+                                    ],
+                                  ),
+                                ))),
+                  ],
+                );
               }
-            }),
-            bottomNavigationBar: NavigationBarApp(),
-            );
+            }
+          }),
+      bottomNavigationBar: NavigationBarApp(),
+    );
   }
 }

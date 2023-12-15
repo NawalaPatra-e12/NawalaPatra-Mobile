@@ -9,39 +9,38 @@ class _ForumPageState extends State<ForumPage> {
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _replyController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forum Discussion'),
+        title: const Text('Forum Discussion'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               'Forum Discussion',
               style: TextStyle(
                 fontFamily: 'Kidstock',
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF011627),
                 fontSize: 30.0,
-                marginBottom: 20.0,
+                // marginBottom: 20.0,
               ),
             ),
             Container(
-              color: Color(0xFF011627),
-              padding: EdgeInsets.all(10.0),
+              color: const Color(0xFF011627),
+              padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Feel free to engage with other people',
                     style: TextStyle(color: Colors.white),
                   ),
-                  SizedBox(height: 8.0),
-                  Text(
+                  const SizedBox(height: 8.0),
+                  const Text(
                     'Click the button below to create a new discussion!',
                     style: TextStyle(color: Colors.white),
                   ),
@@ -55,7 +54,7 @@ class _ForumPageState extends State<ForumPage> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Add New Discussion',
                       style: TextStyle(color: Colors.black),
                     ),
@@ -63,17 +62,17 @@ class _ForumPageState extends State<ForumPage> {
                 ],
               ),
             ),
-            SizedBox(height: 20.0),
-            for (var discussion in discussions)
-              DiscussionCard(
-                user: discussion['user'],
-                date: discussion['date'],
-                description: discussion['description'],
-                replies: discussion['replies'],
-                onReplyPressed: () {
-                  // implementasi buat namabh reply
-                },
-              ),
+            const SizedBox(height: 20.0),
+            // for (var discussion in discussions)
+            //   DiscussionCard(
+            //     user: discussion['user'],
+            //     date: discussion['date'],
+            //     description: discussion['description'],
+            //     replies: discussion['replies'],
+            //     onReplyPressed: () {
+            //       // implementasi buat namabh reply
+            //     },
+            //   ),
           ],
         ),
       ),
@@ -99,22 +98,22 @@ class DiscussionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 10.0),
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Posted by $user on $date',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Divider(),
+                const Divider(),
                 Text(description),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 ElevatedButton(
                   onPressed: onReplyPressed,
                   style: ElevatedButton.styleFrom(
@@ -123,7 +122,7 @@ class DiscussionCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Reply',
                     style: TextStyle(color: Colors.black),
                   ),
@@ -133,16 +132,16 @@ class DiscussionCard extends StatelessWidget {
           ),
           if (replies.isNotEmpty)
             Container(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               color: Colors.grey[200],
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Replies:',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 5.0),
+                  const SizedBox(height: 5.0),
                   for (var reply in replies)
                     ReplyItem(
                       user: reply['user'],
@@ -177,9 +176,9 @@ class ReplyItem extends StatelessWidget {
         Text(text),
         Text(
           'Replied by $user on $date',
-          style: TextStyle(fontSize: 12.0, color: Colors.grey),
+          style: const TextStyle(fontSize: 12.0, color: Colors.grey),
         ),
-        Divider(),
+        const Divider(),
       ],
     );
   }
