@@ -8,14 +8,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 String urlToParse = 'https://nawalapatra.pythonanywhere.com/leaderboard/json';
 
-class BooklistPage extends StatefulWidget {
-  const BooklistPage({Key? key}) : super(key: key);
+class LikesRankPage extends StatefulWidget {
+  const LikesRankPage({Key? key}) : super(key: key);
 
   @override
-  _ProductPageState createState() => _ProductPageState();
+  _LikePageState createState() => _LikePageState();
 }
 
-class _ProductPageState extends State<BooklistPage> {
+class _LikePageState extends State<LikesRankPage> {
   final List<String> options = [
     'All',
     'Literature & Fiction',
