@@ -96,8 +96,7 @@ class _ProductPageState extends State<ForumPage> {
                 description: discussion.fields.description,
                 replies: discussion.fields.replies, // You may need to fetch replies for each discussion
                 onReplyPressed: () {
-                      showReplySubmissionDialog(discussion);
-
+                    showReplySubmissionDialog(discussion);
                   // TODO: Implement logic to add new reply
                   // You can show a modal or navigate to a new screen for reply submission
                 },
@@ -105,6 +104,7 @@ class _ProductPageState extends State<ForumPage> {
           ],
         ),
       ),
+        bottomNavigationBar: NavigationBarApp(),
     );
   }
 
@@ -217,7 +217,7 @@ class DiscussionCard extends StatelessWidget {
   final String user;
   final String date;
   final String description;
-  final List<Map<String, dynamic>> replies;
+  final List<Reply> replies; 
   final VoidCallback onReplyPressed;
 
   DiscussionCard({
@@ -314,7 +314,6 @@ class ReplyItem extends StatelessWidget {
         ),
         const Divider(),  
       ],
-        bottomNavigationBar: NavigationBarApp(),
     );
   }
 }
@@ -338,15 +337,4 @@ class Fields {
 }
 
 
-class Reply {
-  int user;
-  String text;
-  DateTime date;
-
-  Reply({
-    required this.user,
-    required this.text,
-    required this.date,
-  });
-}
 
