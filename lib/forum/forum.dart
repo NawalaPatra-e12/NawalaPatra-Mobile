@@ -143,6 +143,8 @@ class _ProductPageState extends State<ForumPage> {
                     user: 1, // User ID, replace with the actual user ID
                     date: DateTime.now(),
                     description: descriptionController.text,
+                    replies: [], // Initialize with an empty list or fetch from your API
+
                   ),
                 );
 
@@ -316,6 +318,25 @@ class ReplyItem extends StatelessWidget {
     );
   }
 }
+
+class Fields {
+  // Existing fields
+  int user;
+  DateTime date;
+  String description;
+
+  // Add a field for replies
+  List<Reply> replies;
+
+  // Constructor
+  Fields({
+    required this.user,
+    required this.date,
+    required this.description,
+    required this.replies,
+  });
+}
+
 
 class Reply {
   int user;
