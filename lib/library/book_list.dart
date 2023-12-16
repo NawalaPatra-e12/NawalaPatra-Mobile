@@ -239,7 +239,8 @@ class _ProductPageState extends State<BooklistPage> {
                                           child: ElevatedButton(
                                             onPressed: () async {
                                               // print("${index}");
-                                              int book_id = index;
+                                              int book_id =
+                                                  snapshot.data![index].pk;
 
                                               final response = await request.postJson(
                                                   'https://nawalapatra.pythonanywhere.com/library/bookmark-flutter/',
