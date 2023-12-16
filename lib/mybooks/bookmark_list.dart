@@ -51,7 +51,15 @@ class _ProductPageState extends State<BookmarkPage> {
     super.initState();
     selectedOption =
         options.first; // Initialize selectedOption with the first option
-    loadSharedPreferences();
+    clearAllSharedPreferences();
+    // loadSharedPreferences();
+  }
+
+  Future<void> clearAllSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    selectedOption = 'All';
+    updateUrlToParse(selectedOption);
+    // await prefs.clear();
   }
 
   Future<void> loadSharedPreferences() async {

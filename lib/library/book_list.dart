@@ -8,7 +8,7 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String urlToParse = 'https://nawalapatra.pythonanywhere.com/library/json';
+String urlParsing = 'https://nawalapatra.pythonanywhere.com/library/json';
 
 class BooklistPage extends StatefulWidget {
   const BooklistPage({Key? key}) : super(key: key);
@@ -37,7 +37,7 @@ class _ProductPageState extends State<BooklistPage> {
       headers: {"Content-Type": "application/json"},
     );
 
-    print(utf8.decode(response.bodyBytes));
+    // print(utf8.decode(response.bodyBytes));
 
     // melakukan decode response menjadi bentuk json
     var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -55,9 +55,17 @@ class _ProductPageState extends State<BooklistPage> {
   @override
   void initState() {
     super.initState();
-    selectedOption =
-        options.first; // Initialize selectedOption with the first option
-    loadSharedPreferences();
+    selectedOption = options.first;
+    clearAllSharedPreferences();
+    // Initialize selectedOption with the first option
+    // loadSharedPreferences();
+  }
+
+  Future<void> clearAllSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    selectedOption = 'All';
+    updateUrlToParse(selectedOption);
+    // await prefs.clear();
   }
 
   Future<void> loadSharedPreferences() async {
@@ -72,24 +80,24 @@ class _ProductPageState extends State<BooklistPage> {
     // Update urlToParse based on the selected option
     setState(() {
       if (newOption == 'All') {
-        urlToParse = 'https://nawalapatra.pythonanywhere.com/library/json';
+        urlParsing = 'https://nawalapatra.pythonanywhere.com/library/json';
       } else if (newOption == 'Literature & Fiction') {
-        urlToParse =
+        urlParsing =
             "https://nawalapatra.pythonanywhere.com/library/filter-json/1/";
       } else if (newOption == 'Mystery, Thriller & Suspense') {
-        urlToParse =
+        urlParsing =
             "https://nawalapatra.pythonanywhere.com/library/filter-json/2/";
       } else if (newOption == 'Religion & Spirituality') {
-        urlToParse =
+        urlParsing =
             "https://nawalapatra.pythonanywhere.com/library/filter-json/3/";
       } else if (newOption == 'Romance') {
-        urlToParse =
+        urlParsing =
             "https://nawalapatra.pythonanywhere.com/library/filter-json/4/";
       } else if (newOption == 'Science Fiction & Fantasy') {
-        urlToParse =
+        urlParsing =
             "https://nawalapatra.pythonanywhere.com/library/filter-json/5/";
       } else {
-        urlToParse =
+        urlParsing =
             "https://nawalapatra.pythonanywhere.com/library/search-flutter/${newOption}/";
       }
     });
@@ -97,14 +105,6 @@ class _ProductPageState extends State<BooklistPage> {
     await prefs.setString('selectedOption', newOption);
   }
 
-  // Callback function to update search query and perform actions
-  // void onSearchQueryChanged(String newQuery) {
-  //   setState(() {
-  //     // Update necessary state variables or perform actions based on the new query
-  //     selectedOption = 'All'; // For example, resetting the selectedOption
-  //     updateUrlToParse(newQuery); // Call the updateUrlToParse function
-  //   });
-  // }
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -129,6 +129,19 @@ class _ProductPageState extends State<BooklistPage> {
                 border: OutlineInputBorder(),
                 hintText: 'Enter a search term',
               ),
+              onSubmitted: (value) {
+                // Perform action when "Enter" key is pressed
+                setState(() {
+                  selectedOption =
+                      'All'; // Update selectedOption using setState()
+                });
+                String searchTerm = value;
+                if (searchTerm == '' || searchTerm.isEmpty) {
+                  updateUrlToParse('All');
+                } else {
+                  updateUrlToParse(searchTerm);
+                }
+              },
             ),
           ),
           // const SizedBox(width: 20),
@@ -152,31 +165,68 @@ class _ProductPageState extends State<BooklistPage> {
       ),
       drawer: const LeftDrawer(),
       body: FutureBuilder(
-          future: fetchBook(urlToParse),
+          future: fetchBook(urlParsing),
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
               return const Center(child: CircularProgressIndicator());
             } else {
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Column(
+                return Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.all(20.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Library',
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10),
-                          Text("Tidak ada data produk."),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              const Text(
+                                'Filter by Genre:',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              DropdownButton<String>(
+                                value: selectedOption,
+                                icon: const Icon(Icons.arrow_drop_down),
+                                iconSize: 16,
+                                elevation: 16,
+                                style: const TextStyle(
+                                    color: Colors.blue, fontSize: 18),
+                                onChanged: (String? newValue) {
+                                  if (newValue != null) {
+                                    setState(() {
+                                      selectedOption =
+                                          newValue; // Update selectedOption using setState()
+                                    });
+                                    updateUrlToParse(newValue);
+                                  }
+                                },
+                                items: options.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  },
+                                ).toList(),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
+                    const Text("Tidak ada data produk."),
                   ],
                 );
               } else {
