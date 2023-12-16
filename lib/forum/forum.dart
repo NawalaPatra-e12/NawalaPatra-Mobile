@@ -69,7 +69,7 @@ class _ProductPageState extends State<ForumPage> {
                   ElevatedButton(
                     onPressed: () async {
                       // Show discussion submission modal or navigate to a new screen
-                      Product newDiscussion = await showDiscussionSubmissionDialog();
+                      Product? newDiscussion = await showDiscussionSubmissionDialog();
                       if (newDiscussion != null) {
                         addDiscussion(newDiscussion);
                       }
@@ -96,8 +96,7 @@ class _ProductPageState extends State<ForumPage> {
                 description: discussion.fields.description,
                 replies: discussion.fields.replies, // You may need to fetch replies for each discussion
                 onReplyPressed: () {
-                      showReplySubmissionDialog(discussion);
-
+                    showReplySubmissionDialog(discussion);
                   // TODO: Implement logic to add new reply
                   // You can show a modal or navigate to a new screen for reply submission
                 },
@@ -105,10 +104,12 @@ class _ProductPageState extends State<ForumPage> {
           ],
         ),
       ),
+      bottomNavigationBar: NavigationBarApp(),
+
     );
   }
 
-  Future<Product> showDiscussionSubmissionDialog() async {
+  Future<Product?> showDiscussionSubmissionDialog() async {
   TextEditingController descriptionController = TextEditingController();
   
   return showDialog<Product>(
@@ -217,7 +218,7 @@ class DiscussionCard extends StatelessWidget {
   final String user;
   final String date;
   final String description;
-  final List<Map<String, dynamic>> replies;
+  final List<Reply> replies; 
   final VoidCallback onReplyPressed;
 
   DiscussionCard({
@@ -314,39 +315,10 @@ class ReplyItem extends StatelessWidget {
         ),
         const Divider(),  
       ],
-        bottomNavigationBar: NavigationBarApp(),
     );
   }
 }
 
-class Fields {
-  // Existing fields
-  int user;
-  DateTime date;
-  String description;
-
-  // Add a field for replies
-  List<Reply> replies;
-
-  // Constructor
-  Fields({
-    required this.user,
-    required this.date,
-    required this.description,
-    required this.replies,
-  });
-}
 
 
-class Reply {
-  int user;
-  String text;
-  DateTime date;
-
-  Reply({
-    required this.user,
-    required this.text,
-    required this.date,
-  });
-}
 
