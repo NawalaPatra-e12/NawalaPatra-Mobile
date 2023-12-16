@@ -69,7 +69,7 @@ class _ProductPageState extends State<ForumPage> {
                   ElevatedButton(
                     onPressed: () async {
                       // Show discussion submission modal or navigate to a new screen
-                      Product newDiscussion = await showDiscussionSubmissionDialog();
+                      Product? newDiscussion = await showDiscussionSubmissionDialog();
                       if (newDiscussion != null) {
                         addDiscussion(newDiscussion);
                       }
@@ -104,11 +104,12 @@ class _ProductPageState extends State<ForumPage> {
           ],
         ),
       ),
-        bottomNavigationBar: NavigationBarApp(),
+      bottomNavigationBar: NavigationBarApp(),
+
     );
   }
 
-  Future<Product> showDiscussionSubmissionDialog() async {
+  Future<Product?> showDiscussionSubmissionDialog() async {
   TextEditingController descriptionController = TextEditingController();
   
   return showDialog<Product>(
@@ -318,23 +319,6 @@ class ReplyItem extends StatelessWidget {
   }
 }
 
-class Fields {
-  // Existing fields
-  int user;
-  DateTime date;
-  String description;
-
-  // Add a field for replies
-  List<Reply> replies;
-
-  // Constructor
-  Fields({
-    required this.user,
-    required this.date,
-    required this.description,
-    required this.replies,
-  });
-}
 
 
 
