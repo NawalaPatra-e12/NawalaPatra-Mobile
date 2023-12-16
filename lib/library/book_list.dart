@@ -37,6 +37,8 @@ class _ProductPageState extends State<BooklistPage> {
       headers: {"Content-Type": "application/json"},
     );
 
+    print(utf8.decode(response.bodyBytes));
+
     // melakukan decode response menjadi bentuk json
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
@@ -86,26 +88,67 @@ class _ProductPageState extends State<BooklistPage> {
       } else if (newOption == 'Science Fiction & Fantasy') {
         urlToParse =
             "https://nawalapatra.pythonanywhere.com/library/filter-json/5/";
+      } else {
+        urlToParse =
+            "https://nawalapatra.pythonanywhere.com/library/search-flutter/${newOption}/";
       }
     });
     // Store the selected dropdown value in SharedPreferences
     await prefs.setString('selectedOption', newOption);
   }
 
-  // String urlToParse = '';
+  // Callback function to update search query and perform actions
+  // void onSearchQueryChanged(String newQuery) {
+  //   setState(() {
+  //     // Update necessary state variables or perform actions based on the new query
+  //     selectedOption = 'All'; // For example, resetting the selectedOption
+  //     updateUrlToParse(newQuery); // Call the updateUrlToParse function
+  //   });
+  // }
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    String uname = "User";
+    // String uname = "User";
 
-    if (request.loggedIn) {
-      uname = request.jsonData["username"];
-    }
+    // if (request.loggedIn) {
+    //   uname = request.jsonData["username"];
+    // }
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('NawalaPatra'),
+        actions: [
+          SizedBox(
+            width: 200,
+            height: 50,
+            child: TextField(
+              controller: _searchController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter a search term',
+              ),
+            ),
+          ),
+          // const SizedBox(width: 20),
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () async {
+              setState(() {
+                selectedOption =
+                    'All'; // Update selectedOption using setState()
+              });
+              String searchTerm = _searchController.text;
+              if (searchTerm == '' || searchTerm.isEmpty) {
+                updateUrlToParse('All');
+              } else {
+                updateUrlToParse(searchTerm);
+              }
+            },
+          ),
+          const SizedBox(width: 10),
+        ],
       ),
       drawer: const LeftDrawer(),
       body: FutureBuilder(
@@ -117,19 +160,23 @@ class _ProductPageState extends State<BooklistPage> {
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return const Column(
                   children: [
-                    Text(
-                      'Library',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
+                    Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Library',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text("Tidak ada data produk."),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "Tidak ada data produk.",
-                      style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
-                    ),
-                    SizedBox(height: 8),
                   ],
                 );
               } else {
