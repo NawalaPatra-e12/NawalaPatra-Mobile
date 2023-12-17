@@ -92,7 +92,7 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.draw_sharp),
+            leading: const Icon(Icons.bar_chart_rounded),
             title: const Text('Leaderboard'),
             // Bagian redirection ke MyHomePage
             onTap: () {
