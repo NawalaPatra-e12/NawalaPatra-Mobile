@@ -7,21 +7,36 @@ import 'package:nawalapatra_mobile/widgets/left_drawer.dart';
 import 'package:nawalapatra_mobile/widgets/nav_bottom.dart';
 import 'package:http/http.dart' as http;
 
+String urlToParse = 'https://nawalapatra.pythonanywhere.com/forum/json';
+
 class ForumPage extends StatefulWidget {
+  const ForumPage({Key? key}) : super(key: key);
+
+
   @override
-  _ForumPageState createState() => _ForumPageState();
+  _ProductPageState createState() => _ProductPageState();
 }
 
-class _ForumPageState extends State<ForumPage> {
+class _ProductPageState extends State<ForumPage> {
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _replyController = TextEditingController();
 
+  List<Product> discussions = []; // Initialize with an empty list
+
+  void addDiscussion(Product newDiscussion) {
+    setState(() {
+      discussions.add(newDiscussion);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Forum Discussion'),
       ),
+      drawer: const LeftDrawer(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -52,8 +67,12 @@ class _ForumPageState extends State<ForumPage> {
                     style: TextStyle(color: Colors.white),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      // implementasi buat kalo diteken
+                    onPressed: () async {
+                      // Show discussion submission modal or navigate to a new screen
+                      Product? newDiscussion = await showDiscussionSubmissionDialog();
+                      if (newDiscussion != null) {
+                        addDiscussion(newDiscussion);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white,
@@ -70,28 +89,136 @@ class _ForumPageState extends State<ForumPage> {
               ),
             ),
             const SizedBox(height: 20.0),
-            // for (var discussion in discussions)
-            //   DiscussionCard(
-            //     user: discussion['user'],
-            //     date: discussion['date'],
-            //     description: discussion['description'],
-            //     replies: discussion['replies'],
-            //     onReplyPressed: () {
-            //       // implementasi buat namabh reply
-            //     },
-            //   ),
+            for (var discussion in discussions)
+              DiscussionCard(
+                user: discussion.fields.user.toString(),
+                date: discussion.fields.date.toString(),
+                description: discussion.fields.description,
+                replies: discussion.fields.replies, // You may need to fetch replies for each discussion
+                onReplyPressed: () {
+                    showReplySubmissionDialog(discussion);
+                  // TODO: Implement logic to add new reply
+                  // You can show a modal or navigate to a new screen for reply submission
+                },
+              ),
           ],
         ),
       ),
+      bottomNavigationBar: NavigationBarApp(),
+
     );
   }
+
+  Future<Product?> showDiscussionSubmissionDialog() async {
+  TextEditingController descriptionController = TextEditingController();
+  
+  return showDialog<Product>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Add New Discussion'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: descriptionController,
+              decoration: InputDecoration(labelText: 'Description'),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close the dialog without adding a discussion
+            },
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              // Validate and create a new discussion
+              if (descriptionController.text.isNotEmpty) {
+                Product newDiscussion = Product(
+                  model: Model.FORUM_DISCUSSION,
+                  pk: discussions.length + 1, // Assign a unique ID (you may need to modify this logic)
+                  fields: Fields(
+                    user: 1, // User ID, replace with the actual user ID
+                    date: DateTime.now(),
+                    description: descriptionController.text,
+                    replies: [], // Initialize with an empty list or fetch from your API
+
+                  ),
+                );
+
+                Navigator.pop(context, newDiscussion); // Close the dialog and return the new discussion
+              }
+            },
+            child: Text('Submit'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
+Future<void> showReplySubmissionDialog(Product discussion) async {
+    TextEditingController replyController = TextEditingController();
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Add a Reply!'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: replyController,
+                decoration: InputDecoration(labelText: 'Reply'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog without adding a reply
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Validate and create a new reply
+                if (replyController.text.isNotEmpty) {
+                  Reply newReply = Reply(
+                    user: 1, // User ID, replace with the actual user ID
+                    text: replyController.text,
+                    date: DateTime.now(),
+                  );
+
+                  // Add the new reply to the discussion's replies list
+                  discussion.fields.replies.add(newReply);
+
+                  // Trigger a rebuild of the UI
+                  setState(() {});
+
+                  Navigator.pop(context); // Close the dialog
+                }
+              },
+              child: Text('Submit Reply'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
 
 class DiscussionCard extends StatelessWidget {
   final String user;
   final String date;
   final String description;
-  final List<Map<String, dynamic>> replies;
+  final List<Reply> replies; 
   final VoidCallback onReplyPressed;
 
   DiscussionCard({
@@ -105,22 +232,22 @@ class DiscussionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      margin: EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Posted by $user on $date',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                const Divider(),
+                Divider(),
                 Text(description),
-                const SizedBox(height: 10.0),
+                SizedBox(height: 10.0),
                 ElevatedButton(
                   onPressed: onReplyPressed,
                   style: ElevatedButton.styleFrom(
@@ -129,7 +256,7 @@ class DiscussionCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Reply',
                     style: TextStyle(color: Colors.black),
                   ),
@@ -139,21 +266,21 @@ class DiscussionCard extends StatelessWidget {
           ),
           if (replies.isNotEmpty)
             Container(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.0),
               color: Colors.grey[200],
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Replies:',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 5.0),
+                  SizedBox(height: 5.0),
                   for (var reply in replies)
                     ReplyItem(
-                      user: reply['user'],
-                      text: reply['text'],
-                      date: reply['date'],
+                       user: reply.user.toString(),
+                       text: reply.text,
+                       date: reply.date.toString(),
                     ),
                 ],
               ),
@@ -163,6 +290,7 @@ class DiscussionCard extends StatelessWidget {
     );
   }
 }
+
 
 class ReplyItem extends StatelessWidget {
   final String user;
@@ -185,8 +313,12 @@ class ReplyItem extends StatelessWidget {
           'Replied by $user on $date',
           style: const TextStyle(fontSize: 12.0, color: Colors.grey),
         ),
-        const Divider(),
+        const Divider(),  
       ],
     );
   }
 }
+
+
+
+

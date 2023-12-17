@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import   'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:nawalapatra_mobile/models/book.dart';
@@ -6,16 +6,16 @@ import 'package:nawalapatra_mobile/widgets/left_drawer.dart';
 import 'package:nawalapatra_mobile/widgets/nav_bottom.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String urlToParse = 'https://nawalapatra.pythonanywhere.com/leaderboard/json';
+String urlToParse = 'http://localhost:8000/leaderboard/json';
 
-class LikesRankPage extends StatefulWidget {
-  const LikesRankPage({Key? key}) : super(key: key);
+class LeaderPage extends StatefulWidget {
+  const LeaderPage({Key? key}) : super(key: key);
 
   @override
   _LikePageState createState() => _LikePageState();
 }
 
-class _LikePageState extends State<LikesRankPage> {
+class _LikePageState extends State<LeaderPage> {
   final List<String> options = [
     'All',
     'Literature & Fiction',
@@ -28,25 +28,28 @@ class _LikePageState extends State<LikesRankPage> {
   late SharedPreferences prefs;
 
   Future<List<Book>> fetchBook(String parseUrl) async {
-    // DO: Ganti URL
     var url = Uri.parse(parseUrl);
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
     );
 
-    // melakukan decode response menjadi bentuk json
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
-    // melakukan konversi data json menjadi object Product
-    List<Book> list_product = [];
+    // Convert JSON data to a list of Book objects
+    List<Book> books = [];
     for (var d in data) {
       if (d != null) {
-        list_product.add(Book.fromJson(d));
+        books.add(Book.fromJson(d));
       }
     }
-    return list_product;
+
+    // Sort the books by their rate in descending order
+    books.sort((a, b) => b.fields.rate.compareTo(a.fields.rate));
+
+    return books;
   }
+
 
   @override
   void initState() {
@@ -68,22 +71,22 @@ class _LikePageState extends State<LikesRankPage> {
     // Update urlToParse based on the selected option
     setState(() {
       if (newOption == 'All') {
-        urlToParse = 'https://nawalapatra.pythonanywhere.com/leaderboard/json';
+        urlToParse = 'http://localhost:8000/leaderboard/json';
       } else if (newOption == 'Literature & Fiction') {
         urlToParse =
-        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/1/";
+        "http://localhost:8000/leaderboard/filter-json/1/";
       } else if (newOption == 'Mystery, Thriller & Suspense') {
         urlToParse =
-        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/2/";
+        "http://localhost:8000/leaderboard/filter-json/2/";
       } else if (newOption == 'Religion & Spirituality') {
         urlToParse =
-        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/3/";
+        "http://localhost:8000/leaderboard/filter-json/3/";
       } else if (newOption == 'Romance') {
         urlToParse =
-        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/4/";
+        "http://localhost:8000/leaderboard/filter-json/4/";
       } else if (newOption == 'Science Fiction & Fantasy') {
         urlToParse =
-        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/5/";
+        "http://localhost:8000/leaderboard/filter-json/5/";
       }
     });
     // Store the selected dropdown value in SharedPreferences
@@ -209,6 +212,15 @@ class _LikePageState extends State<LikesRankPage> {
                                         const SizedBox(height: 10),
                                         Text(
                                             "${snapshot.data![index].fields.category}"),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          "Likes: ${snapshot.data![index].fields.rate}",
+                                          style: const TextStyle(
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.redAccent,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
