@@ -12,10 +12,10 @@ class LeaderPage extends StatefulWidget {
   const LeaderPage({Key? key}) : super(key: key);
 
   @override
-  _ProductPageState createState() => _ProductPageState();
+  _LikePageState createState() => _LikePageState();
 }
 
-class _ProductPageState extends State<LeaderPage> {
+class _LikePageState extends State<LeaderPage> {
   final List<String> options = [
     'All',
     'Literature & Fiction',
