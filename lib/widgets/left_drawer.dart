@@ -77,6 +77,18 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.bar_chart_rounded),
+            title: const Text('Leaderboard'),
+            // Bagian redirection ke MyHomePage
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookRatePage(),
+                  ));
+            },
+          ),
           // ListTile(
           //   leading: const Icon(Icons.checklist),
           //   title: const Text('Lihat Item'),
