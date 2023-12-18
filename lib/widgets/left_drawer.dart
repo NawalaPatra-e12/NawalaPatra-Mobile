@@ -21,7 +21,7 @@ class LeftDrawer extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Sylladex Mobile',
+                  'NawalaPatra',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
@@ -31,7 +31,7 @@ class LeftDrawer extends StatelessWidget {
                 ),
                 Padding(padding: EdgeInsets.all(10)),
                 Text(
-                  "Your trusted portable sylladex.",
+                  "Your trusted online library.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15,
@@ -44,7 +44,7 @@ class LeftDrawer extends StatelessWidget {
           ),
           // DO: Bagian routing
           ListTile(
-            leading: const Icon(Icons.home_outlined),
+            leading: const Icon(Icons.home),
             title: const Text('Home'),
             // Bagian redirection ke MyHomePage
             onTap: () {
