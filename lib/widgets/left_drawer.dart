@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:nawalapatra_mobile/screens/menu.dart';
 import 'package:nawalapatra_mobile/library/book_list.dart';
 import 'package:nawalapatra_mobile/writersjam/writer.dart';
+import 'package:nawalapatra_mobile/leaderboard/likes_rank.dart';
+import 'package:nawalapatra_mobile/forum/forum.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -77,6 +79,31 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
+           ListTile(
+            leading: const Icon(Icons.draw_sharp),
+            title: const Text('Forum'),
+            // Bagian redirection ke MyHomePage
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ForumPage(),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.bar_chart_rounded),
+            title: const Text('Leaderboard'),
+            // Bagian redirection ke MyHomePage
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LeaderPage(),
+                  ));
+            },
+          ),
+          //
           // ListTile(
           //   leading: const Icon(Icons.checklist),
           //   title: const Text('Lihat Item'),
