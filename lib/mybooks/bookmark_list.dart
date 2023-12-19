@@ -270,16 +270,10 @@ class _ProductPageState extends State<BookmarkPage> {
                                                             .send();
                                                     if (response.statusCode ==
                                                         200) {
-                                                      setState(() {
-                                                        Future.delayed(
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    100), () {
-                                                          fetchBookmark(
-                                                              urlToParse,
-                                                              request);
-                                                        });
-                                                      });
+                                                      Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(builder: (context) => BookmarkPage()),
+                                                      );
                                                       ScaffoldMessenger.of(
                                                           context)
                                                         ..hideCurrentSnackBar()
@@ -288,7 +282,7 @@ class _ProductPageState extends State<BookmarkPage> {
                                                             'You have successfully removed "${snapshot.data![index].book.title}" !',
                                                           ),
                                                         ));
-                                                      Navigator.pop(context);
+                                                      // Navigator.pop(context);
                                                     } else {
                                                       // Handle error jika penghapusan gagal
                                                       print(
