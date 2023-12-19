@@ -22,17 +22,12 @@ class StoryFormPage extends StatefulWidget {
 
 class _StoryFormPageState extends State<StoryFormPage> {
     final _formKey = GlobalKey<FormState>();
-    // final int _user = 0;
-    // String _username = "";
-    // final DateTime _date = DateTime.now();
     String _title = "";
     String _story = "";
-    // final int _prompt = promptNow;
 
     @override
     Widget build(BuildContext context) {
       final request = context.watch<CookieRequest>();
-      // _username = request.jsonData["username"];
       
         return Scaffold(
           appBar: AppBar(
@@ -108,17 +103,14 @@ class _StoryFormPageState extends State<StoryFormPage> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                             // Kirim ke Django dan tunggu respons
-                            // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
                             final response = await request.postJson(
                               // TODO: pake link yg ngarah ke flutter, bikin baru
-                            "https://nawalapatra.pythonanywhere.com/writersjam/submit-story-flutter/",
+                            "https://nawalapatra.pythonanywhere.com/writersjam/create_story_flutter/",
                             jsonEncode(<String, String>{
-                                // 'username': _username,
-                                // 'date': _date.year.toString().padLeft(4, '0') + '-' + _date.month.toString().padLeft(2, '0') + '-' + _date.day.toString().padLeft(2, '0'),
                                 'title': _title,
                                 'story': _story,
-                                // 'prompt': _prompt.toString(),
                             }));
+
                             if (response['status'] == 'success') {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
