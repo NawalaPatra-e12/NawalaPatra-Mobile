@@ -51,7 +51,15 @@ class _ProductPageState extends State<BookmarkPage> {
     super.initState();
     selectedOption =
         options.first; // Initialize selectedOption with the first option
-    loadSharedPreferences();
+    clearAllSharedPreferences();
+    // loadSharedPreferences();
+  }
+
+  Future<void> clearAllSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    selectedOption = 'All';
+    updateUrlToParse(selectedOption);
+    // await prefs.clear();
   }
 
   Future<void> loadSharedPreferences() async {
@@ -191,44 +199,84 @@ class _ProductPageState extends State<BookmarkPage> {
                                     ),
                                     Container(
                                       width: 200,
-                                      child: ElevatedButton(
-                                        onPressed: () async {
-                                          var url = Uri.parse(
-                                              'https://nawalapatra.pythonanywhere.com/mybooks/remove_bookmark/');
-                                          var requestRemove =
-                                              await http.Request(
-                                            "DELETE",
-                                            url,
-                                          );
-                                          requestRemove.body = jsonEncode(
-                                              {"id": snapshot.data![index].pk});
-                                          final response =
-                                              await requestRemove.send();
-                                          if (response.statusCode == 200) {
-                                            // Jika penghapusan berhasil, perbarui state dengan memanggil ulang fetchBookmark
-                                            setState(() {
-                                              // Anda juga dapat melempar parameter baru ke fungsi fetchBookmark
-                                              // jika diperlukan untuk pembaruan data yang lebih spesifik
-                                              fetchBookmark(
-                                                  urlToParse, request);
-                                            });
-                                            ScaffoldMessenger.of(context)
-                                              ..hideCurrentSnackBar()
-                                              ..showSnackBar(SnackBar(
-                                                content: Text(
-                                                    'You have successfully removed "${snapshot.data![index].book.title}" !'),
-                                              ));
-                                          } else {
-                                            // Handle error jika penghapusan gagal
-                                            print(
-                                                'Failed to remove. Status code: ${response.statusCode}');
-                                          }
-                                        },
-                                        child: const Text('Remove'),
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Colors
-                                              .red, // You can change the color according to your UI
-                                        ),
+                                      child: Column(
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              var url = Uri.parse(
+                                                  'https://nawalapatra.pythonanywhere.com/mybooks/remove_bookmark/');
+                                              var requestRemove =
+                                                  await http.Request(
+                                                "DELETE",
+                                                url,
+                                              );
+                                              requestRemove.body = jsonEncode({
+                                                "id": snapshot.data![index].pk
+                                              });
+                                              final response =
+                                                  await requestRemove.send();
+                                              if (response.statusCode == 200) {
+                                                // Jika penghapusan berhasil, perbarui state dengan memanggil ulang fetchBookmark
+                                                setState(() {
+                                                  // Anda juga dapat melempar parameter baru ke fungsi fetchBookmark
+                                                  // jika diperlukan untuk pembaruan data yang lebih spesifik
+                                                  fetchBookmark(
+                                                      urlToParse, request);
+                                                });
+                                                ScaffoldMessenger.of(context)
+                                                  ..hideCurrentSnackBar()
+                                                  ..showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        'You have successfully removed "${snapshot.data![index].book.title}" !'),
+                                                  ));
+                                              } else {
+                                                // Handle error jika penghapusan gagal
+                                                print(
+                                                    'Failed to remove. Status code: ${response.statusCode}');
+                                              }
+                                            },
+                                            child: const Text('Remove'),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors
+                                                  .red, // You can change the color according to your UI
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              // Tampilkan review dalam AlertDialog
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                        '"${snapshot.data![index].book.title}"'),
+                                                    content: Text(snapshot
+                                                            .data![index]
+                                                            .review ??
+                                                        'No review available'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child:
+                                                            const Text('Close'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            child: const Text('View Review'),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors
+                                                  .blue, // Adjust color according to your UI
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
