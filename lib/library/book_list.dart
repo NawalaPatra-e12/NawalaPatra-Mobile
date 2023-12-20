@@ -396,7 +396,7 @@ class _ProductPageState extends State<BooklistPage> {
               }
             }
           }),
-      bottomNavigationBar: NavigationBarApp(),
+      bottomNavigationBar: const NavigationBarApp(),
     );
   }
 }

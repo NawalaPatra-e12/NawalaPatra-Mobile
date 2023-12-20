@@ -210,7 +210,19 @@ class _BookGenreState extends State<BookRecommend> {
                                   });
                                   updateUrlToParse('All');
                                 },
-                                child: Text('All Books'),
+                                child: Text(
+                                  'All Books', 
+                                  style: TextStyle(fontSize: 13, color: Colors.white),
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side: BorderSide(color: Colors.orange)
+                                    )
+                                  )
+                                ),
                               ),
                               SizedBox(width: 20),
                               ElevatedButton(
@@ -220,8 +232,21 @@ class _BookGenreState extends State<BookRecommend> {
                                   });
                                   updateUrlToParse('$promptNow');
                                 },
-                                child: Text('Book Recommended for this theme!'),
-                              ),
+                                child: Text(
+                                  'Book Recommended for this theme!', 
+                                  style: TextStyle(fontSize: 13, color: Colors.white),
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side: BorderSide(color: Colors.orange)
+                                    )
+                                  )
+                                ),
+                              )
+
                             ],
                           ),
                           const SizedBox(height: 10),

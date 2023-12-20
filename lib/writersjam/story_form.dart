@@ -33,10 +33,10 @@ class _StoryFormPageState extends State<StoryFormPage> {
           appBar: AppBar(
             title: const Center(
               child: Text(
-                'Form Submit Story',
+                'Submit Story',
               ),
             ),
-            backgroundColor: const Color.fromARGB(255, 145,190,220),
+            backgroundColor: const Color.fromARGB(255, 6, 22, 38),
             foregroundColor: Colors.white,
           ),
           body: Form(
@@ -98,7 +98,13 @@ class _StoryFormPageState extends State<StoryFormPage> {
                     child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(const Color.fromARGB(255, 189, 169, 149)),
+                            MaterialStateProperty.all(const Color.fromARGB(255, 97, 193, 181)),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(18.0),
+                                            side: BorderSide(color: Colors.blue)
+                                          )
+                                        )
                       ),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -133,6 +139,7 @@ class _StoryFormPageState extends State<StoryFormPage> {
                         "Submit",
                         style: TextStyle(color: Colors.white),
                       ),
+                      
                     ),
                   ),
                 ),
