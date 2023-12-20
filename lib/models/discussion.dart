@@ -32,61 +32,29 @@ class Product {
     };
 }
 
-class Reply {
-  int user;
-  String text;
-  DateTime date;
-
-  Reply({
-    required this.user,
-    required this.text,
-    required this.date,
-  });
-
-  factory Reply.fromJson(Map<String, dynamic> json) => Reply(
-        user: json["user"],
-        text: json["text"],
-        date: DateTime.parse(json["date"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "user": user,
-        "text": text,
-        "date": date.toIso8601String(),
-      };
-}
-
-
 class Fields {
-  int user;
-  DateTime date;
-  String description;
-  List<Reply> replies; // Change the type to List<Reply>
+    int user;
+    DateTime date;
+    String description;
 
-  Fields({
-    required this.user,
-    required this.date,
-    required this.description,
-    required this.replies,
-  });
+    Fields({
+        required this.user,
+        required this.date,
+        required this.description,
+    });
 
-  factory Fields.fromJson(Map<String, dynamic> json) => Fields(
+    factory Fields.fromJson(Map<String, dynamic> json) => Fields(
         user: json["user"],
         date: DateTime.parse(json["date"]),
         description: json["description"],
-        replies: (json["replies"] as List<dynamic>)
-            .map((replyJson) => Reply.fromJson(replyJson))
-            .toList(),
-      );
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "user": user,
         "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
         "description": description,
-        "replies": replies.map((reply) => reply.toJson()).toList(),
-      };
+    };
 }
-
 
 enum Model {
     FORUM_DISCUSSION

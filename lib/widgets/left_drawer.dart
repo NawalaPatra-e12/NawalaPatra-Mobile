@@ -37,6 +37,7 @@ class LeftDrawer extends StatelessWidget {
                 Padding(padding: EdgeInsets.all(10)),
                 Text(
                   "Karya, Kata, Cerita dan Cinta",
+
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15,
@@ -96,33 +97,33 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
-          if (request.loggedIn) ...[
+          if (request.loggedIn)... [
+           ListTile(
+            leading: const Icon(Icons.forum_rounded),
+            title: const Text('Forum'),
+            // Bagian redirection ke MyHomePage
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ForumPage(),
+                  ));
+            },
+          ),
+            ],
+          if (request.loggedIn)... [
             ListTile(
-              leading: const Icon(Icons.forum_rounded),
-              title: const Text('Forum'),
-              // Bagian redirection ke MyHomePage
-              onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ForumPage(),
-                    ));
-              },
-            ),
-          ],
-          if (request.loggedIn) ...[
-            ListTile(
-              leading: const Icon(Icons.bookmark_rounded),
-              title: const Text('MyBooks'),
-              // Bagian redirection ke MyHomePage
-              onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BookmarkPage(),
-                    ));
-              },
-            ),
+            leading: const Icon(Icons.bookmark_rounded),
+            title: const Text('MyBooks'),
+            // Bagian redirection ke MyHomePage
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookmarkPage(),
+                  ));
+            },
+          ),
           ]
 
           //
