@@ -1,4 +1,7 @@
 # nawalapatra_mobile
+
+[Tautan Publikasi Aplikasi](https://install.appcenter.ms/orgs/nawalapatra/apps/nawalapatra/distribution_groups/public)
+
 [![Build status](https://build.appcenter.ms/v0.1/apps/8d981f8f-5d92-4fbb-8b10-f53adcd1601d/branches/main/badge)](https://appcenter.ms)
 Website NawalaPatra : [NawalaPatra](https://nawalapatra.pythonanywhere.com/)
 
