@@ -16,7 +16,7 @@ class LeftDrawer extends StatelessWidget {
           const DrawerHeader(
             // Bagian drawer header
             decoration: BoxDecoration(
-              color: Color(0xff3e2f48),
+              color: Color(0xFF011627),
             ),
             child: Column(
               children: [
@@ -24,6 +24,7 @@ class LeftDrawer extends StatelessWidget {
                   'NawalaPatra',
                   textAlign: TextAlign.center,
                   style: TextStyle(
+                    fontFamily: 'Kidstock',
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -80,8 +81,8 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
-           ListTile(
-            leading: const Icon(Icons.forum_rounded),
+          ListTile(
+            leading: const Icon(Icons.forum),
             title: const Text('Forum'),
             // Bagian redirection ke MyHomePage
             onTap: () {

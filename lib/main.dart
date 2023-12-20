@@ -13,9 +13,28 @@ String username_global = "";
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  MaterialColor createMaterialColor(Color color) {
+    final Map<int, Color> colorMap = {
+      50: color.withOpacity(0.1),
+      100: color.withOpacity(0.2),
+      200: color.withOpacity(0.3),
+      300: color.withOpacity(0.4),
+      400: color.withOpacity(0.5),
+      500: color.withOpacity(0.6),
+      600: color.withOpacity(0.7),
+      700: color.withOpacity(0.8),
+      800: color.withOpacity(0.9),
+      900: color.withOpacity(1.0),
+    };
+
+    return MaterialColor(color.value, colorMap);
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Color primaryColor = Color(0xFF011627);
+
     return Provider(
         create: (_) {
           CookieRequest request = CookieRequest();
@@ -41,8 +60,7 @@ class MyApp extends StatelessWidget {
             //
             // This works for code too, not just values: Most code changes can be
             // tested with just a hot reload.
-            colorScheme:
-                ColorScheme.fromSeed(seedColor: const Color(0xff3e2f48)),
+            colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
             useMaterial3: true,
           ),
           home: MyHomePage(),
