@@ -12,7 +12,8 @@ String urlParsing = 'https://nawalapatra.pythonanywhere.com/library/json';
 
 DateTime now = DateTime.now();
 DateTime startOfYear = DateTime(now.year, 1, 1);
-int weekOfYear = ((now.difference(startOfYear).inDays + startOfYear.weekday) / 7).ceil();
+int weekOfYear =
+    ((now.difference(startOfYear).inDays + startOfYear.weekday) / 7).ceil();
 int currentWeek = weekOfYear % 5;
 
 class BookRecommend extends StatefulWidget {
@@ -109,7 +110,7 @@ class _BookGenreState extends State<BookRecommend> {
     await prefs.setString('selectedOption', newOption);
   }
 
-  final TextEditingController _searchController = TextEditingController();
+  // final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -128,11 +129,11 @@ class _BookGenreState extends State<BookRecommend> {
           future: fetchBook(urlParsing),
           builder: (context, AsyncSnapshot snapshot) {
             int promptNow = 0;
-            if(currentWeek == 0) promptNow = 3;
-            if(currentWeek == 1) promptNow = 4;
-            if(currentWeek == 2) promptNow = 0;
-            if(currentWeek == 3) promptNow = 1;
-            if(currentWeek == 4) promptNow = 2;
+            if (currentWeek == 0) promptNow = 3;
+            if (currentWeek == 1) promptNow = 4;
+            if (currentWeek == 2) promptNow = 0;
+            if (currentWeek == 3) promptNow = 1;
+            if (currentWeek == 4) promptNow = 2;
             if (snapshot.data == null) {
               return const Center(child: CircularProgressIndicator());
             } else {
@@ -157,7 +158,8 @@ class _BookGenreState extends State<BookRecommend> {
                               ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    selectedOption = 'All'; // Update selectedOption using setState()
+                                    selectedOption =
+                                        'All'; // Update selectedOption using setState()
                                   });
                                   updateUrlToParse('All');
                                 },
@@ -166,7 +168,8 @@ class _BookGenreState extends State<BookRecommend> {
                               ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    selectedOption = genres[promptNow]; // Update selectedOption using setState()
+                                    selectedOption = genres[
+                                        promptNow]; // Update selectedOption using setState()
                                   });
                                   updateUrlToParse('$promptNow');
                                 },
@@ -189,8 +192,13 @@ class _BookGenreState extends State<BookRecommend> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(children: [
-                            TextButton(onPressed: () {Navigator.pop(context);}, child: Icon(Icons.arrow_back)),
+                          Row(
+                            children: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Icon(Icons.arrow_back)),
                               const Text(
                                 'Writers Jam Book Recommendation',
                                 style: TextStyle(
@@ -206,7 +214,8 @@ class _BookGenreState extends State<BookRecommend> {
                               ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    selectedOption = 'All'; // Update selectedOption using setState()
+                                    selectedOption =
+                                        'All'; // Update selectedOption using setState()
                                   });
                                   updateUrlToParse('All');
                                 },
@@ -216,7 +225,8 @@ class _BookGenreState extends State<BookRecommend> {
                               ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    selectedOption = genres[promptNow]; // Update selectedOption using setState()
+                                    selectedOption = genres[
+                                        promptNow]; // Update selectedOption using setState()
                                   });
                                   updateUrlToParse('$promptNow');
                                 },
@@ -225,8 +235,9 @@ class _BookGenreState extends State<BookRecommend> {
                             ],
                           ),
                           const SizedBox(height: 10),
-                          Text('Interested in some of it? might wanna bookmarked it in the Library ;)', 
-                          style: TextStyle(
+                          Text(
+                            'Interested in some of it? might wanna bookmarked it in the Library ;)',
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.normal,
                             ),
