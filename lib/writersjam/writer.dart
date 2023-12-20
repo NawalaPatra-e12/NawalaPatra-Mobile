@@ -182,7 +182,7 @@ class _StoryPageState extends State<StoryListPage> {
                               'Weekly Prompt Theme',
                               style: TextStyle(
                                 fontSize: 18,
-                                fontWeight: FontWeight.normal,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
                             ),

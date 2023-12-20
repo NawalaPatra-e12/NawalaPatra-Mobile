@@ -110,8 +110,8 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
-            ]
-          if (request.loggedIn)... [
+          ],
+          if (request.loggedIn)...[
             ListTile(
             leading: const Icon(Icons.bookmark_rounded),
             title: const Text('MyBooks'),
@@ -124,7 +124,7 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
-          ]
+          ] 
 
           //
           // ListTile(
