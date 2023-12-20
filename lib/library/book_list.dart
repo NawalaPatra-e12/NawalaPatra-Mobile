@@ -120,25 +120,81 @@ class _ProductPageState extends State<BooklistPage> {
     // }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('NawalaPatra'),
-        actions: [
-          SizedBox(
-            width: 200,
-            height: 50,
-            child: TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter a search term',
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBar(
+          backgroundColor: const Color(0xFF011627),
+          elevation: 0,
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFF2EC4B6),
               ),
-              onSubmitted: (value) {
-                // Perform action when "Enter" key is pressed
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFE71D36),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFFF9F1C),
+              ),
+              const SizedBox(width: 20), // Adjust the space between rectangles
+              const Text(
+                'NawalaPatra',
+                style: TextStyle(
+                  fontFamily: 'Kidstock',
+                  color: Colors.white, // Change title text color as needed
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            SizedBox(
+              width: 200,
+              height: 40,
+              child: TextField(
+                controller: _searchController,
+                style: const TextStyle(
+                  fontSize: 16, // Set the font size to make the text smaller
+                ),
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter a search term',
+                ),
+                onSubmitted: (value) {
+                  // Perform action when "Enter" key is pressed
+                  setState(() {
+                    selectedOption =
+                        'All'; // Update selectedOption using setState()
+                  });
+                  String searchTerm = value;
+                  if (searchTerm == '' || searchTerm.isEmpty) {
+                    updateUrlToParse('All');
+                  } else {
+                    updateUrlToParse(searchTerm);
+                  }
+                },
+              ),
+            ),
+            // const SizedBox(width: 20),
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () async {
                 setState(() {
                   selectedOption =
                       'All'; // Update selectedOption using setState()
                 });
-                String searchTerm = value;
+                String searchTerm = _searchController.text;
                 if (searchTerm == '' || searchTerm.isEmpty) {
                   updateUrlToParse('All');
                 } else {
@@ -146,25 +202,9 @@ class _ProductPageState extends State<BooklistPage> {
                 }
               },
             ),
-          ),
-          // const SizedBox(width: 20),
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () async {
-              setState(() {
-                selectedOption =
-                    'All'; // Update selectedOption using setState()
-              });
-              String searchTerm = _searchController.text;
-              if (searchTerm == '' || searchTerm.isEmpty) {
-                updateUrlToParse('All');
-              } else {
-                updateUrlToParse(searchTerm);
-              }
-            },
-          ),
-          const SizedBox(width: 10),
-        ],
+            const SizedBox(width: 10),
+          ],
+        ),
       ),
       drawer: const LeftDrawer(),
       body: FutureBuilder(
@@ -205,7 +245,7 @@ class _ProductPageState extends State<BooklistPage> {
                                 iconSize: 16,
                                 elevation: 16,
                                 style: const TextStyle(
-                                    color: Colors.blue, fontSize: 18),
+                                    color: Color(0xFF2EC4B6), fontSize: 18),
                                 onChanged: (String? newValue) {
                                   if (newValue != null) {
                                     setState(() {
@@ -231,10 +271,18 @@ class _ProductPageState extends State<BooklistPage> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              BookReqlistPage(),
+                                              const BookReqlistPage(),
                                         ));
                                   },
-                                  child: Text("Book Requests")),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(
+                                        0xFFFF9F1C), // Change background color here
+                                    // You can adjust other properties like padding, shape, etc., if needed
+                                  ),
+                                  child: const Text(
+                                    "Library Requests",
+                                    style: TextStyle(color: Color(0xFF011627)),
+                                  )),
                             ],
                           ),
                         ],
@@ -276,7 +324,7 @@ class _ProductPageState extends State<BooklistPage> {
                                 iconSize: 16,
                                 elevation: 16,
                                 style: const TextStyle(
-                                    color: Colors.blue, fontSize: 18),
+                                    color: Color(0xFF2EC4B6), fontSize: 18),
                                 onChanged: (String? newValue) {
                                   if (newValue != null) {
                                     setState(() {
@@ -302,10 +350,18 @@ class _ProductPageState extends State<BooklistPage> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              BookReqlistPage(),
+                                              const BookReqlistPage(),
                                         ));
                                   },
-                                  child: Text("Book Requests")),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(
+                                        0xFFFF9F1C), // Change background color here
+                                    // You can adjust other properties like padding, shape, etc., if needed
+                                  ),
+                                  child: const Text(
+                                    "Library Requests",
+                                    style: TextStyle(color: Color(0xFF011627)),
+                                  )),
                             ],
                           ),
                         ],
@@ -396,7 +452,7 @@ class _ProductPageState extends State<BooklistPage> {
               }
             }
           }),
-      bottomNavigationBar: NavigationBarApp(),
+      bottomNavigationBar: const NavigationBarApp(),
     );
   }
 }

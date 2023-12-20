@@ -76,12 +76,12 @@ class _DiscussionFormPageState extends State<DiscussionFormPage> {
                             // Kirim ke Django dan tunggu respons
                             final response = await request.postJson(
                               // TODO: pake link yg ngarah ke flutter, bikin baru
-                            "https://nawalapatra.pythonanywhere.com/writersjam/create_discussion_flutter/",
+                            "https://nawalapatra.pythonanywhere.com/forum/submit-discussion/",
                             jsonEncode(<String, String>{
                                 'description': _description,
                             }));
 
-                            if (response['status'] == 'success') {
+                            if (response['status'] == '201') {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
                                 content: Text("Diskusi berhasil diunggah!"),

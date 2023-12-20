@@ -82,7 +82,7 @@ class _ProductPageState extends State<ForumPage> {
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                          color: Colors.blue.shade100,
+                          color: Colors.black,
                           border: Border.all(
                             width: 1,
                           ),

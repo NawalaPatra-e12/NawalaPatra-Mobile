@@ -12,7 +12,8 @@ String urlParsing = 'https://nawalapatra.pythonanywhere.com/library/json';
 
 DateTime now = DateTime.now();
 DateTime startOfYear = DateTime(now.year, 1, 1);
-int weekOfYear = ((now.difference(startOfYear).inDays + startOfYear.weekday) / 7).ceil();
+int weekOfYear =
+    ((now.difference(startOfYear).inDays + startOfYear.weekday) / 7).ceil();
 int currentWeek = weekOfYear % 5;
 
 class BookRecommend extends StatefulWidget {
@@ -109,30 +110,68 @@ class _BookGenreState extends State<BookRecommend> {
     await prefs.setString('selectedOption', newOption);
   }
 
-  final TextEditingController _searchController = TextEditingController();
+  // final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'NawalaPatra',
+      // appBar: AppBar(
+      //   title: const Text(
+      //     'NawalaPatra',
+      //   ),
+      //   backgroundColor: const Color(0xff3e2f48), //added colour for appbar!
+      //   foregroundColor: Colors.white,
+      // ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBar(
+          backgroundColor: const Color(0xFF011627),
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFF2EC4B6),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFE71D36),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFFF9F1C),
+              ),
+              const SizedBox(width: 20), // Adjust the space between rectangles
+              const Text(
+                'NawalaPatra',
+                style: TextStyle(
+                  fontFamily: 'Kidstock',
+                  color: Colors.white, // Change title text color as needed
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
-        backgroundColor: const Color(0xff3e2f48), //added colour for appbar!
-        foregroundColor: Colors.white,
       ),
-      drawer: const LeftDrawer(),
+      // drawer: const LeftDrawer(),
       body: FutureBuilder(
           future: fetchBook(urlParsing),
           builder: (context, AsyncSnapshot snapshot) {
             int promptNow = 0;
-            if(currentWeek == 0) promptNow = 3;
-            if(currentWeek == 1) promptNow = 4;
-            if(currentWeek == 2) promptNow = 0;
-            if(currentWeek == 3) promptNow = 1;
-            if(currentWeek == 4) promptNow = 2;
+            if (currentWeek == 0) promptNow = 3;
+            if (currentWeek == 1) promptNow = 4;
+            if (currentWeek == 2) promptNow = 0;
+            if (currentWeek == 3) promptNow = 1;
+            if (currentWeek == 4) promptNow = 2;
             if (snapshot.data == null) {
               return const Center(child: CircularProgressIndicator());
             } else {
@@ -147,7 +186,7 @@ class _BookGenreState extends State<BookRecommend> {
                           const Text(
                             'Writers Jam Book Recommendation',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 28,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -157,7 +196,8 @@ class _BookGenreState extends State<BookRecommend> {
                               ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    selectedOption = 'All'; // Update selectedOption using setState()
+                                    selectedOption =
+                                        'All'; // Update selectedOption using setState()
                                   });
                                   updateUrlToParse('All');
                                 },
@@ -166,7 +206,8 @@ class _BookGenreState extends State<BookRecommend> {
                               ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    selectedOption = genres[promptNow]; // Update selectedOption using setState()
+                                    selectedOption = genres[
+                                        promptNow]; // Update selectedOption using setState()
                                   });
                                   updateUrlToParse('$promptNow');
                                 },
@@ -189,12 +230,17 @@ class _BookGenreState extends State<BookRecommend> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(children: [
-                            TextButton(onPressed: () {Navigator.pop(context);}, child: Icon(Icons.arrow_back)),
+                          Row(
+                            children: [
+                              // TextButton(
+                              //     onPressed: () {
+                              //       Navigator.pop(context);
+                              //     },
+                              //     child: Icon(Icons.arrow_back)),
                               const Text(
                                 'Writers Jam Book Recommendation',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -206,27 +252,60 @@ class _BookGenreState extends State<BookRecommend> {
                               ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    selectedOption = 'All'; // Update selectedOption using setState()
+                                    selectedOption =
+                                        'All'; // Update selectedOption using setState()
                                   });
                                   updateUrlToParse('All');
                                 },
-                                child: Text('All Books'),
+                                child: Text(
+                                  'All Books',
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.white),
+                                ),
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.orange),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: BorderSide(
+                                                color: Colors.orange)))),
                               ),
                               SizedBox(width: 20),
                               ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    selectedOption = genres[promptNow]; // Update selectedOption using setState()
+                                    selectedOption = genres[
+                                        promptNow]; // Update selectedOption using setState()
                                   });
                                   updateUrlToParse('$promptNow');
                                 },
-                                child: Text('Book Recommended for this theme!'),
-                              ),
+                                child: Text(
+                                  'Book Recommended for this theme!',
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.white),
+                                ),
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.orange),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: BorderSide(
+                                                color: Colors.orange)))),
+                              )
                             ],
                           ),
                           const SizedBox(height: 10),
-                          Text('Interested in some of it? might wanna bookmarked it in the Library ;)', 
-                          style: TextStyle(
+                          Text(
+                            'Interested in some of it? might wanna bookmarked it in the Library ;)',
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.normal,
                             ),

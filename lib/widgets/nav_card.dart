@@ -6,6 +6,9 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:nawalapatra_mobile/library/book_list.dart';
 import 'package:nawalapatra_mobile/writersjam/writer.dart';
+import 'package:nawalapatra_mobile/leaderboard/likes_rank.dart';
+import 'package:nawalapatra_mobile/forum/forum.dart';
+import 'package:nawalapatra_mobile/mybooks/bookmark_list.dart';
 
 class NavItem {
   final String name;
@@ -38,7 +41,9 @@ class NavCard extends StatelessWidget {
           if (item.name == "Library") {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const BooklistPage()));
-          } else if (item.name == "Logout") {
+          } 
+          
+          if (request.loggedIn && item.name == "Logout") {
             final response = await request.logout(
                 // DO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
                 "https://nawalapatra.pythonanywhere.com/auth/logout/");
@@ -57,15 +62,103 @@ class NavCard extends StatelessWidget {
                 content: Text("$message"),
               ));
             }
+          } else if (item.name == "Logout"){
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Login Required'),
+                  content: Text('Mohon login terlebih dahulu'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text('Sign In'),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginApp()),
+                      );
+                      },
+                    ),
+                    TextButton(
+                      child: Text('Ok'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
           }
+
           if (item.name == "Writers Jam") {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const StoryListPage()));
+          }
+
+          if (item.name == "Leaderboard") {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const LeaderPage()));
+          }
+
+          // if (item.name == "Forum") {
+          //   Navigator.push(context,
+          //       MaterialPageRoute(builder: (context) => const ForumPage()));
+          // }
+
+          if (request.loggedIn && item.name == "Forum"){
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const ForumPage()));
+          } else if (item.name == "Forum"){
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Login Required'),
+                  content: Text('Mohon login terlebih dahulu'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+
+          if (request.loggedIn && item.name == "MyBooks"){
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const BookmarkPage()));
+          } else if (item.name == "MyBooks"){
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Login Required'),
+                  content: Text('Mohon login terlebih dahulu'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
           }
         },
         child: Container(
           // Container untuk menyimpan Icon dan Text
           padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15), // Adjust this value to make the edges rounder
+          ),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -84,7 +177,7 @@ class NavCard extends StatelessWidget {
               ],
             ),
           ),
-        ),
+        )
       ),
     );
   }
