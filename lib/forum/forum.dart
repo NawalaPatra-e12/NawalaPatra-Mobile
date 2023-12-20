@@ -5,6 +5,8 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:nawalapatra_mobile/widgets/left_drawer.dart';
 import 'package:nawalapatra_mobile/widgets/nav_bottom.dart';
+import 'package:nawalapatra_mobile/forum/discussion_form.dart';
+
 import 'package:http/http.dart' as http;
 
 String urlToParse = 'https://nawalapatra.pythonanywhere.com/forum/json';
@@ -12,313 +14,153 @@ String urlToParse = 'https://nawalapatra.pythonanywhere.com/forum/json';
 class ForumPage extends StatefulWidget {
   const ForumPage({Key? key}) : super(key: key);
 
-
   @override
   _ProductPageState createState() => _ProductPageState();
 }
 
 class _ProductPageState extends State<ForumPage> {
-  TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _replyController = TextEditingController();
+  List<Product> discussions = [];
 
-  List<Product> discussions = []; // Initialize with an empty list
+  Future<List<Product>> fetchDiscussion() async {
+    // DO: Ganti URL
+    var url = Uri.parse('https://nawalapatra.pythonanywhere.com/forum/get-discussion/');
+    var response = await http.get(
+      url,
+      headers: {"Content-Type": "application/json"},
+    );
 
-  void addDiscussion(Product newDiscussion) {
-    setState(() {
-      discussions.add(newDiscussion);
-    });
+    // melakukan decode response menjadi bentuk json
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    // print(data);
+    // melakukan konversi data json menjadi object Product
+    List<Product> list_product = [];
+    for (var d in data) {
+      if (d != null) {
+        list_product.add(Product.fromJson(d));
+      }
+    }
+    return list_product;
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Forum Discussion'),
-      ),
-      drawer: const LeftDrawer(),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              'Forum Discussion',
-              style: TextStyle(
-                fontFamily: 'Kidstock',
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF011627),
-                fontSize: 30.0,
-                // marginBottom: 20.0,
-              ),
-            ),
-            Container(
-              color: const Color(0xFF011627),
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  const Text(
-                    'Feel free to engage with other people',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  const SizedBox(height: 8.0),
-                  const Text(
-                    'Click the button below to create a new discussion!',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      // Show discussion submission modal or navigate to a new screen
-                      Product? newDiscussion = await showDiscussionSubmissionDialog();
-                      if (newDiscussion != null) {
-                        addDiscussion(newDiscussion);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+        appBar: AppBar(
+          title: const Text('Halaman Forum'),
+        ),
+        drawer: const LeftDrawer(),
+        body: 
+          FutureBuilder(
+            future: fetchDiscussion(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.data == null) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                if (!snapshot.hasData) {
+                  return const Column(
+                    children: [
+                      Text(
+                        "Belum ada diskusi yang diunggah.",
+                        style:
+                            TextStyle(color: Color(0xff59A5D8), fontSize: 20),
                       ),
-                    ),
-                    child: const Text(
-                      'Add New Discussion',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20.0),
-            for (var discussion in discussions)
-              DiscussionCard(
-                user: discussion.fields.user.toString(),
-                date: discussion.fields.date.toString(),
-                description: discussion.fields.description,
-                replies: discussion.fields.replies, // You may need to fetch replies for each discussion
-                onReplyPressed: () {
-                    showReplySubmissionDialog(discussion);
-                  // TODO: Implement logic to add new reply
-                  // You can show a modal or navigate to a new screen for reply submission
-                },
-              ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: NavigationBarApp(),
-
-    );
-  }
-
-  Future<Product?> showDiscussionSubmissionDialog() async {
-  TextEditingController descriptionController = TextEditingController();
-  
-  return showDialog<Product>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Add New Discussion'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Close the dialog without adding a discussion
-            },
-            child: Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              // Validate and create a new discussion
-              if (descriptionController.text.isNotEmpty) {
-                Product newDiscussion = Product(
-                  model: Model.FORUM_DISCUSSION,
-                  pk: discussions.length + 1, // Assign a unique ID (you may need to modify this logic)
-                  fields: Fields(
-                    user: 1, // User ID, replace with the actual user ID
-                    date: DateTime.now(),
-                    description: descriptionController.text,
-                    replies: [], // Initialize with an empty list or fetch from your API
-
-                  ),
-                );
-
-                Navigator.pop(context, newDiscussion); // Close the dialog and return the new discussion
-              }
-            },
-            child: Text('Submit'),
-          ),
-        ],
-      );
-    },
-  );
-}
-
-
-Future<void> showReplySubmissionDialog(Product discussion) async {
-    TextEditingController replyController = TextEditingController();
-
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Add a Reply!'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: replyController,
-                decoration: InputDecoration(labelText: 'Reply'),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the dialog without adding a reply
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Validate and create a new reply
-                if (replyController.text.isNotEmpty) {
-                  Reply newReply = Reply(
-                    user: 1, // User ID, replace with the actual user ID
-                    text: replyController.text,
-                    date: DateTime.now(),
+                      SizedBox(height: 8),
+                    ],
                   );
+                } else {
+    
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 20.0,
+                            top: 20.0,
+                            right: 20.0,
+                            bottom: 5.0,  // No padding at the bottom
+                          ),
+                        child: Container(
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                          color: Colors.blue.shade100,
+                          border: Border.all(
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Column(
+                          children: [
+                            const Text(
+                                'Feel free to engage with other people',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              const SizedBox(height: 8.0),
+                            const Text(
+                              'Click the button below to create a new discussion!',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => DiscussionFormPage()),
+                                        );
+                                      },
+                                      child: Text('Submit Your Discussion'),
+                                    )
 
-                  // Add the new reply to the discussion's replies list
-                  discussion.fields.replies.add(newReply);
-
-                  // Trigger a rebuild of the UI
-                  setState(() {});
-
-                  Navigator.pop(context); // Close the dialog
+                            
+                          ]
+                        )
+                        )
+                      ),
+              
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (_, index) => 
+                      Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          padding: const EdgeInsets.all(20.0),
+                          decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center, // Change to center
+                            children: [
+                              
+                              const SizedBox(height: 10),
+                              Text(
+                                "by ${snapshot.data![index].fields.user}",
+                                style: const TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              // const SizedBox(height: 10),
+                              Divider(color: Colors.black),
+                              Text(
+                                "${snapshot.data![index].fields.description}",
+                                textAlign: TextAlign.justify, 
+                              ),
+                              const SizedBox(height: 20),
+                              Text("${snapshot.data![index].fields.date}"),
+                            ],
+                          ),
+                        ))
+                      )
+                    ]
+                  );
                 }
-              },
-              child: Text('Submit Reply'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-}
-
-class DiscussionCard extends StatelessWidget {
-  final String user;
-  final String date;
-  final String description;
-  final List<Reply> replies; 
-  final VoidCallback onReplyPressed;
-
-  DiscussionCard({
-    required this.user,
-    required this.date,
-    required this.description,
-    required this.replies,
-    required this.onReplyPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Posted by $user on $date',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Divider(),
-                Text(description),
-                SizedBox(height: 10.0),
-                ElevatedButton(
-                  onPressed: onReplyPressed,
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  child: Text(
-                    'Reply',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          if (replies.isNotEmpty)
-            Container(
-              padding: EdgeInsets.all(10.0),
-              color: Colors.grey[200],
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Replies:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 5.0),
-                  for (var reply in replies)
-                    ReplyItem(
-                       user: reply.user.toString(),
-                       text: reply.text,
-                       date: reply.date.toString(),
-                    ),
-                ],
-              ),
-            ),
-        ],
-      ),
-    );
+              }
+            }),
+            bottomNavigationBar: NavigationBarApp(),
+            );
   }
 }
-
-
-class ReplyItem extends StatelessWidget {
-  final String user;
-  final String text;
-  final String date;
-
-  ReplyItem({
-    required this.user,
-    required this.text,
-    required this.date,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(text),
-        Text(
-          'Replied by $user on $date',
-          style: const TextStyle(fontSize: 12.0, color: Colors.grey),
-        ),
-        const Divider(),  
-      ],
-    );
-  }
-}
-
-
-
-
