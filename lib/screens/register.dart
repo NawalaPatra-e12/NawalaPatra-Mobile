@@ -1,16 +1,18 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:nawalapatra_mobile/screens/menu.dart';
+import 'dart:convert';
+
+import 'package:nawalapatra_mobile/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
-// void main() {
-//   runApp(const LoginApp());
-// }
+void main() {
+  runApp(const RegisterApp());
+}
 
-class LoginApp extends StatelessWidget {
-  const LoginApp({super.key});
+class RegisterApp extends StatelessWidget {
+  const RegisterApp({super.key});
 
   MaterialColor createMaterialColor(Color color) {
     final Map<int, Color> colorMap = {
@@ -31,30 +33,32 @@ class LoginApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color primaryColor = Color(0xFF011627);
+    Color primaryColor = const Color(0xFF011627);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Login',
+      title: 'Register',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
         useMaterial3: true,
       ),
-      home: const LoginPage(),
+      home: const RegisterPage(),
     );
   }
 }
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPage createState() => _RegisterPage();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPage extends State<RegisterPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _reconfirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Login',
+          'Register',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -79,9 +83,16 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 12.0),
             TextField(
-              controller: _passwordController,
+              controller: _reconfirmPasswordController,
               decoration: const InputDecoration(
                 labelText: 'Password',
+              ),
+              obscureText: true,
+            ),
+            TextField(
+              controller: _passwordController,
+              decoration: const InputDecoration(
+                labelText: 'Reconfirm Password',
               ),
               obscureText: true,
             ),
@@ -90,23 +101,23 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () async {
                 String username = _usernameController.text;
                 String password = _passwordController.text;
+                String password2 = _reconfirmPasswordController.text;
 
-                // Cek kredensial
-                // DO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-                // Untuk menyambungkan Android emulator dengan Django pada localhost,
-                // gunakan URL http://10.0.2.2/
-                final response = await request.login(
-                    "https://nawalapatra.pythonanywhere.com/auth/login/", {
-                  'username': username,
-                  'password': password,
-                });
+                final response = await request.postJson(
+                    "https://nawalapatra.pythonanywhere.com/auth/register/",
+                    jsonEncode(<String, String>{
+                      "username": username,
+                      "password": password,
+                      "reconfirmPassword": password2,
+                    }));
+                bool success = response['status'];
 
-                if (request.loggedIn) {
+                if (success) {
                   String message = response['message'];
                   String uname = response['username'];
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                    MaterialPageRoute(builder: (context) => const LoginApp()),
                   );
                   ScaffoldMessenger.of(context)
                     ..hideCurrentSnackBar()
@@ -116,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text('Login Gagal'),
+                      title: const Text('Register Gagal'),
                       content: Text(response['message']),
                       actions: [
                         TextButton(
@@ -130,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 }
               },
-              child: const Text('Login'),
+              child: const Text('Register'),
             ),
           ],
         ),
