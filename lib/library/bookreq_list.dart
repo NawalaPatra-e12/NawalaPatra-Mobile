@@ -58,8 +58,43 @@ class _ReqPageState extends State<BookReqlistPage> {
     // }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('NawalaPatra'),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBar(
+          backgroundColor: const Color(0xFF011627),
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFF2EC4B6),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFE71D36),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFFF9F1C),
+              ),
+              const SizedBox(width: 20), // Adjust the space between rectangles
+              const Text(
+                'NawalaPatra',
+                style: TextStyle(
+                  fontFamily: 'Kidstock',
+                  color: Colors.white, // Change title text color as needed
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       // drawer: const LeftDrawer(),
       body: FutureBuilder(
@@ -77,7 +112,7 @@ class _ReqPageState extends State<BookReqlistPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Book Requests',
+                            'Library Requests',
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
@@ -222,7 +257,7 @@ class _ReqPageState extends State<BookReqlistPage> {
                                                 "@${snapshot.data![index].username} (you)",
                                                 style: const TextStyle(
                                                   fontSize: 10.0,
-                                                  color: Colors.purple,
+                                                  color: Color(0xFFe88600),
                                                 ),
                                               ),
                                             ] else ...[
@@ -230,7 +265,7 @@ class _ReqPageState extends State<BookReqlistPage> {
                                                 "@${snapshot.data![index].username}",
                                                 style: const TextStyle(
                                                   fontSize: 10.0,
-                                                  color: Colors.blueGrey,
+                                                  color: Color(0xff249b90),
                                                 ),
                                               ),
                                             ],
@@ -287,8 +322,12 @@ class _ReqPageState extends State<BookReqlistPage> {
                                                         backgroundColor: Colors
                                                             .red, // You can change the color according to your UI
                                                       ),
-                                                      child:
-                                                          const Text('Delete'),
+                                                      child: const Text(
+                                                        'Delete',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
