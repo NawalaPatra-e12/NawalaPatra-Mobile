@@ -4,6 +4,7 @@ import 'package:nawalapatra_mobile/library/book_list.dart';
 import 'package:nawalapatra_mobile/writersjam/writer.dart';
 import 'package:nawalapatra_mobile/leaderboard/likes_rank.dart';
 import 'package:nawalapatra_mobile/forum/forum.dart';
+import 'package:nawalapatra_mobile/mybooks/bookmark_list.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +20,7 @@ class LeftDrawer extends StatelessWidget {
           const DrawerHeader(
             // Bagian drawer header
             decoration: BoxDecoration(
-              color: Color(0xff3e2f48),
+              color: Color(0xFF011627),
             ),
             child: Column(
               children: [
@@ -27,6 +28,7 @@ class LeftDrawer extends StatelessWidget {
                   'NawalaPatra',
                   textAlign: TextAlign.center,
                   style: TextStyle(
+                    fontFamily: 'Kidstock',
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -34,7 +36,8 @@ class LeftDrawer extends StatelessWidget {
                 ),
                 Padding(padding: EdgeInsets.all(10)),
                 Text(
-                  "Your trusted online library.",
+                  "Karya, Kata, Cerita dan Cinta",
+
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15,
@@ -82,21 +85,6 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
-            if (request.loggedIn)
-           ListTile(
-          
-            leading: const Icon(Icons.draw_sharp),
-            title: const Text('Forum'),
-            // Bagian redirection ke MyHomePage
-            onTap: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ForumPage(),
-                  ));
-            },
-            
-          ),
           ListTile(
             leading: const Icon(Icons.bar_chart_rounded),
             title: const Text('Leaderboard'),
@@ -109,6 +97,35 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
+          if (request.loggedIn)... [
+           ListTile(
+            leading: const Icon(Icons.forum_rounded),
+            title: const Text('Forum'),
+            // Bagian redirection ke MyHomePage
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ForumPage(),
+                  ));
+            },
+          ),
+            ],
+          if (request.loggedIn)... [
+            ListTile(
+            leading: const Icon(Icons.bookmark_rounded),
+            title: const Text('MyBooks'),
+            // Bagian redirection ke MyHomePage
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookmarkPage(),
+                  ));
+            },
+          ),
+          ]
+
           //
           // ListTile(
           //   leading: const Icon(Icons.checklist),
