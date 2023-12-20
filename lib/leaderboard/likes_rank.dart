@@ -1,12 +1,14 @@
-import   'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:nawalapatra_mobile/models/book.dart';
 import 'package:nawalapatra_mobile/widgets/left_drawer.dart';
 import 'package:nawalapatra_mobile/widgets/nav_bottom.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String urlToParse = 'http://localhost:8000/leaderboard/json';
+String urlToParse = 'https://nawalapatra.pythonanywhere.com/leaderboard/json';
 
 class LeaderPage extends StatefulWidget {
   const LeaderPage({Key? key}) : super(key: key);
@@ -14,7 +16,6 @@ class LeaderPage extends StatefulWidget {
   @override
   _LikePageState createState() => _LikePageState();
 }
-
 
 class _LikePageState extends State<LeaderPage> {
   final List<String> options = [
@@ -60,6 +61,13 @@ class _LikePageState extends State<LeaderPage> {
     loadSharedPreferences();
   }
 
+  Future<void> clearAllSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    selectedOption = 'All';
+    updateUrlToParse(selectedOption);
+    // await prefs.clear();
+  }
+
   Future<void> loadSharedPreferences() async {
     prefs = await SharedPreferences.getInstance();
     // Retrieve the stored dropdown value or set default value as 'Option 1'
@@ -68,36 +76,51 @@ class _LikePageState extends State<LeaderPage> {
     updateUrlToParse(selectedOption);
   }
 
+
   Future<void> updateUrlToParse(String newOption) async {
     // Update urlToParse based on the selected option
     setState(() {
       if (newOption == 'All') {
-        urlToParse = 'http://localhost:8000/leaderboard/json';
+        urlToParse = 'https://nawalapatra.pythonanywhere.com/leaderboard/json';
       } else if (newOption == 'Literature & Fiction') {
         urlToParse =
-        "http://localhost:8000/leaderboard/filter-json/1/";
+        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/1/";
       } else if (newOption == 'Mystery, Thriller & Suspense') {
         urlToParse =
-        "http://localhost:8000/leaderboard/filter-json/2/";
+        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/2/";
       } else if (newOption == 'Religion & Spirituality') {
         urlToParse =
-        "http://localhost:8000/leaderboard/filter-json/3/";
+        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/3/";
       } else if (newOption == 'Romance') {
         urlToParse =
-        "http://localhost:8000/leaderboard/filter-json/4/";
+        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/4/";
       } else if (newOption == 'Science Fiction & Fantasy') {
         urlToParse =
-        "http://localhost:8000/leaderboard/filter-json/5/";
+        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/5/";
       }
     });
     // Store the selected dropdown value in SharedPreferences
     await prefs.setString('selectedOption', newOption);
   }
 
+  Future<void> increaseBookRate(int bookId) async {
+    var url = Uri.parse('https://nawalapatra.pythonanywhere.com/leaderboard/rate_button');
+    var response = await http.post(url, body: {'book_id': bookId.toString()});
+
+    if (response.statusCode == 200) {
+      // Handle successful response
+    } else {
+      // Handle error
+    }
+  }
+
+
+
   // String urlToParse = '';
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('NawalaPatra'),
@@ -174,9 +197,9 @@ class _LikePageState extends State<LeaderPage> {
                       ),
                     ),
                     Expanded(
-                        child: ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (_, index) => Padding(
+                      child: ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (_, index) => Padding(
                               padding: const EdgeInsets.all(20.0),
                               child: Row(
                                 crossAxisAlignment:
@@ -209,26 +232,72 @@ class _LikePageState extends State<LeaderPage> {
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
-                                            "${snapshot.data![index].fields.author}"),
+                                            "Author: ${snapshot.data![index].fields.author}"),
                                         const SizedBox(height: 10),
                                         Text(
-                                            "${snapshot.data![index].fields.category}"),
+                                            "Genre: ${snapshot.data![index].fields.category}"),
                                         const SizedBox(height: 10),
                                         Text(
                                           "Likes: ${snapshot.data![index].fields.rate}",
                                           style: const TextStyle(
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.redAccent,
-                                          ),
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.redAccent,
                                         ),
-                                      ],
+                                      ),
+
+                                        ],
+
                                     ),
                                   ),
+            if (request.loggedIn) ...[
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () async {
+                  // print("${index}");
+                  int book_id =
+                      snapshot.data![index].pk;
+
+                  final response = await request.postJson(
+                      'https://nawalapatra.pythonanywhere.com/leaderboard/rate-button-flutter',
+                      jsonEncode(<String, int>{
+                        'index': book_id,
+                      })
+                    // You can include headers or other necessary data here
+                  );
+                  if (response['status'] ==
+                      'success') {
+                    setState(() {
+                      fetchBook(urlToParse); // Refresh the forum list after deletion
+                    });
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(SnackBar(
+                          content: Text(
+                              'You Like "${snapshot.data![index].fields.title}" So Much!!!')));
+                  } else {
+                    // Handle other status codes (if needed)
+                    print(
+                        'Failed to bookmark. Status code: ${response.statusCode}');
+                  }
+                },
+                child: Icon(
+                  Icons.favorite,
+                  color: Colors.pink,
+                  size: 24.0,
+                ),
+
+              ),
+
+            ]
                                 ],
-                              ),
-                            ))),
-                  ],
+
+
+
+
+
+                              ))),
+                    )],
                 );
               }
             }
