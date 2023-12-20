@@ -12,7 +12,6 @@ String urlToParse = 'https://nawalapatra.pythonanywhere.com/forum/json';
 class ForumPage extends StatefulWidget {
   const ForumPage({Key? key}) : super(key: key);
 
-
   @override
   _ProductPageState createState() => _ProductPageState();
 }
@@ -33,8 +32,46 @@ class _ProductPageState extends State<ForumPage> {
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Forum Discussion'),
+      // appBar: AppBar(
+      //   title: const Text('Forum Discussion'),
+      // ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBar(
+          backgroundColor: const Color(0xFF011627),
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFF2EC4B6),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFE71D36),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFFF9F1C),
+              ),
+              const SizedBox(width: 20), // Adjust the space between rectangles
+              const Text(
+                'NawalaPatra',
+                style: TextStyle(
+                  fontFamily: 'Kidstock',
+                  color: Colors.white, // Change title text color as needed
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       drawer: const LeftDrawer(),
       body: SingleChildScrollView(
@@ -45,13 +82,14 @@ class _ProductPageState extends State<ForumPage> {
             const Text(
               'Forum Discussion',
               style: TextStyle(
-                fontFamily: 'Kidstock',
+                // fontFamily: 'Kidstock',
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF011627),
-                fontSize: 30.0,
+                fontSize: 28.0,
                 // marginBottom: 20.0,
               ),
             ),
+            const SizedBox(height: 10),
             Container(
               color: const Color(0xFF011627),
               padding: const EdgeInsets.all(10.0),
@@ -69,7 +107,8 @@ class _ProductPageState extends State<ForumPage> {
                   ElevatedButton(
                     onPressed: () async {
                       // Show discussion submission modal or navigate to a new screen
-                      Product? newDiscussion = await showDiscussionSubmissionDialog();
+                      Product? newDiscussion =
+                          await showDiscussionSubmissionDialog();
                       if (newDiscussion != null) {
                         addDiscussion(newDiscussion);
                       }
@@ -94,9 +133,10 @@ class _ProductPageState extends State<ForumPage> {
                 user: discussion.fields.user.toString(),
                 date: discussion.fields.date.toString(),
                 description: discussion.fields.description,
-                replies: discussion.fields.replies, // You may need to fetch replies for each discussion
+                replies: discussion.fields
+                    .replies, // You may need to fetch replies for each discussion
                 onReplyPressed: () {
-                    showReplySubmissionDialog(discussion);
+                  showReplySubmissionDialog(discussion);
                   // TODO: Implement logic to add new reply
                   // You can show a modal or navigate to a new screen for reply submission
                 },
@@ -105,63 +145,63 @@ class _ProductPageState extends State<ForumPage> {
         ),
       ),
       bottomNavigationBar: NavigationBarApp(),
-
     );
   }
 
   Future<Product?> showDiscussionSubmissionDialog() async {
-  TextEditingController descriptionController = TextEditingController();
-  
-  return showDialog<Product>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Add New Discussion'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
+    TextEditingController descriptionController = TextEditingController();
+
+    return showDialog<Product>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Add New Discussion'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: descriptionController,
+                decoration: InputDecoration(labelText: 'Description'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(
+                    context); // Close the dialog without adding a discussion
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Validate and create a new discussion
+                if (descriptionController.text.isNotEmpty) {
+                  Product newDiscussion = Product(
+                    model: Model.FORUM_DISCUSSION,
+                    pk: discussions.length +
+                        1, // Assign a unique ID (you may need to modify this logic)
+                    fields: Fields(
+                      user: 1, // User ID, replace with the actual user ID
+                      date: DateTime.now(),
+                      description: descriptionController.text,
+                      replies: [], // Initialize with an empty list or fetch from your API
+                    ),
+                  );
+
+                  Navigator.pop(context,
+                      newDiscussion); // Close the dialog and return the new discussion
+                }
+              },
+              child: Text('Submit'),
             ),
           ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Close the dialog without adding a discussion
-            },
-            child: Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              // Validate and create a new discussion
-              if (descriptionController.text.isNotEmpty) {
-                Product newDiscussion = Product(
-                  model: Model.FORUM_DISCUSSION,
-                  pk: discussions.length + 1, // Assign a unique ID (you may need to modify this logic)
-                  fields: Fields(
-                    user: 1, // User ID, replace with the actual user ID
-                    date: DateTime.now(),
-                    description: descriptionController.text,
-                    replies: [], // Initialize with an empty list or fetch from your API
+        );
+      },
+    );
+  }
 
-                  ),
-                );
-
-                Navigator.pop(context, newDiscussion); // Close the dialog and return the new discussion
-              }
-            },
-            child: Text('Submit'),
-          ),
-        ],
-      );
-    },
-  );
-}
-
-
-Future<void> showReplySubmissionDialog(Product discussion) async {
+  Future<void> showReplySubmissionDialog(Product discussion) async {
     TextEditingController replyController = TextEditingController();
 
     return showDialog<void>(
@@ -181,7 +221,8 @@ Future<void> showReplySubmissionDialog(Product discussion) async {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Close the dialog without adding a reply
+                Navigator.pop(
+                    context); // Close the dialog without adding a reply
               },
               child: Text('Cancel'),
             ),
@@ -211,14 +252,13 @@ Future<void> showReplySubmissionDialog(Product discussion) async {
       },
     );
   }
-
 }
 
 class DiscussionCard extends StatelessWidget {
   final String user;
   final String date;
   final String description;
-  final List<Reply> replies; 
+  final List<Reply> replies;
   final VoidCallback onReplyPressed;
 
   DiscussionCard({
@@ -278,9 +318,9 @@ class DiscussionCard extends StatelessWidget {
                   SizedBox(height: 5.0),
                   for (var reply in replies)
                     ReplyItem(
-                       user: reply.user.toString(),
-                       text: reply.text,
-                       date: reply.date.toString(),
+                      user: reply.user.toString(),
+                      text: reply.text,
+                      date: reply.date.toString(),
                     ),
                 ],
               ),
@@ -290,7 +330,6 @@ class DiscussionCard extends StatelessWidget {
     );
   }
 }
-
 
 class ReplyItem extends StatelessWidget {
   final String user;
@@ -313,12 +352,8 @@ class ReplyItem extends StatelessWidget {
           'Replied by $user on $date',
           style: const TextStyle(fontSize: 12.0, color: Colors.grey),
         ),
-        const Divider(),  
+        const Divider(),
       ],
     );
   }
 }
-
-
-
-

@@ -117,14 +117,52 @@ class _BookGenreState extends State<BookRecommend> {
     final request = context.watch<CookieRequest>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'NawalaPatra',
+      // appBar: AppBar(
+      //   title: const Text(
+      //     'NawalaPatra',
+      //   ),
+      //   backgroundColor: const Color(0xff3e2f48), //added colour for appbar!
+      //   foregroundColor: Colors.white,
+      // ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBar(
+          backgroundColor: const Color(0xFF011627),
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFF2EC4B6),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFE71D36),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFFF9F1C),
+              ),
+              const SizedBox(width: 20), // Adjust the space between rectangles
+              const Text(
+                'NawalaPatra',
+                style: TextStyle(
+                  fontFamily: 'Kidstock',
+                  color: Colors.white, // Change title text color as needed
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
-        backgroundColor: const Color(0xff3e2f48), //added colour for appbar!
-        foregroundColor: Colors.white,
       ),
-      drawer: const LeftDrawer(),
+      // drawer: const LeftDrawer(),
       body: FutureBuilder(
           future: fetchBook(urlParsing),
           builder: (context, AsyncSnapshot snapshot) {
@@ -148,7 +186,7 @@ class _BookGenreState extends State<BookRecommend> {
                           const Text(
                             'Writers Jam Book Recommendation',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 28,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -194,15 +232,15 @@ class _BookGenreState extends State<BookRecommend> {
                         children: [
                           Row(
                             children: [
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Icon(Icons.arrow_back)),
+                              // TextButton(
+                              //     onPressed: () {
+                              //       Navigator.pop(context);
+                              //     },
+                              //     child: Icon(Icons.arrow_back)),
                               const Text(
                                 'Writers Jam Book Recommendation',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -220,18 +258,21 @@ class _BookGenreState extends State<BookRecommend> {
                                   updateUrlToParse('All');
                                 },
                                 child: Text(
-                                  'All Books', 
-                                  style: TextStyle(fontSize: 13, color: Colors.white),
+                                  'All Books',
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.white),
                                 ),
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.orange)
-                                    )
-                                  )
-                                ),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.orange),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: BorderSide(
+                                                color: Colors.orange)))),
                               ),
                               SizedBox(width: 20),
                               ElevatedButton(
@@ -243,20 +284,22 @@ class _BookGenreState extends State<BookRecommend> {
                                   updateUrlToParse('$promptNow');
                                 },
                                 child: Text(
-                                  'Book Recommended for this theme!', 
-                                  style: TextStyle(fontSize: 13, color: Colors.white),
+                                  'Book Recommended for this theme!',
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.white),
                                 ),
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.orange)
-                                    )
-                                  )
-                                ),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.orange),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: BorderSide(
+                                                color: Colors.orange)))),
                               )
-
                             ],
                           ),
                           const SizedBox(height: 10),

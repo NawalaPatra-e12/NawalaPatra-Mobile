@@ -32,9 +32,11 @@ class _BookReqPageState extends State<BookReqFormPage> {
         title: const Center(
           child: Text(
             'Book Request Form',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            // style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
+        backgroundColor: const Color.fromARGB(255, 6, 22, 38),
+        foregroundColor: Colors.white,
         // backgroundColor: const Color(0xff3e2f48),
         // foregroundColor: Colors.white,
       ),
@@ -123,6 +125,13 @@ class _BookReqPageState extends State<BookReqFormPage> {
                   //   backgroundColor:
                   //       MaterialStateProperty.all(const Color(0xFF011627)),
                   // ),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          const Color.fromARGB(255, 97, 193, 181)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.blue)))),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       // Kirim ke Django dan tunggu respons
@@ -157,7 +166,7 @@ class _BookReqPageState extends State<BookReqFormPage> {
                   },
                   child: const Text(
                     "Save",
-                    // style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
