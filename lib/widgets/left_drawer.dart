@@ -4,6 +4,7 @@ import 'package:nawalapatra_mobile/library/book_list.dart';
 import 'package:nawalapatra_mobile/writersjam/writer.dart';
 import 'package:nawalapatra_mobile/leaderboard/likes_rank.dart';
 import 'package:nawalapatra_mobile/forum/forum.dart';
+import 'package:nawalapatra_mobile/mybooks/bookmark_list.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -82,6 +83,19 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.bar_chart_rounded),
+            title: const Text('Leaderboard'),
+            // Bagian redirection ke MyHomePage
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LeaderPage(),
+                  ));
+            },
+          ),
+           ListTile(
+            leading: const Icon(Icons.forum_rounded),
             leading: const Icon(Icons.forum),
             title: const Text('Forum'),
             // Bagian redirection ke MyHomePage
@@ -94,17 +108,18 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.bar_chart_rounded),
-            title: const Text('Leaderboard'),
+            leading: const Icon(Icons.bookmark_rounded),
+            title: const Text('MyBooks'),
             // Bagian redirection ke MyHomePage
             onTap: () {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LeaderPage(),
+                    builder: (context) => BookmarkPage(),
                   ));
             },
           ),
+
           //
           // ListTile(
           //   leading: const Icon(Icons.checklist),
