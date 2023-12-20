@@ -5,12 +5,15 @@ import 'package:nawalapatra_mobile/writersjam/writer.dart';
 import 'package:nawalapatra_mobile/leaderboard/likes_rank.dart';
 import 'package:nawalapatra_mobile/forum/forum.dart';
 import 'package:nawalapatra_mobile/mybooks/bookmark_list.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Drawer(
       child: ListView(
         children: [
@@ -106,7 +109,8 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
-          ListTile(
+          if (request.loggedIn)... [
+            ListTile(
             leading: const Icon(Icons.bookmark_rounded),
             title: const Text('MyBooks'),
             // Bagian redirection ke MyHomePage
@@ -118,6 +122,7 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
+          ]
 
           //
           // ListTile(

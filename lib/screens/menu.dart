@@ -7,13 +7,14 @@ class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
 
   final List<NavItem> items = [
-    NavItem("Library", Icons.library_books, const Color(0xff7f5478)),
-    NavItem("Writers Jam", Icons.draw_sharp, const Color(0xff7f5478)),
-    NavItem("Leaderboard", Icons.bar_chart_rounded, const Color(0xff7f5478)),
-    NavItem("Forum", Icons.forum_rounded, const Color(0xff7f5478)),
-    NavItem("MyBooks", Icons.bookmark_rounded, const Color(0xff7f5478)),
-    NavItem("Logout", Icons.logout, const Color(0xff7f5478)),
+    NavItem("Library", Icons.library_books, const Color.fromARGB(255, 97, 193, 181)),
+    NavItem("Writers Jam", Icons.draw_sharp, const Color.fromARGB(255, 241, 163, 65)),
+    NavItem("Leaderboard", Icons.bar_chart_rounded, const Color.fromARGB(255, 212, 55, 62)),
+    NavItem("Forum", Icons.forum_rounded, const Color.fromARGB(255, 212, 55, 62)),
+    NavItem("MyBooks", Icons.bookmark_rounded, const Color.fromARGB(255, 97, 193, 181)),
+    NavItem("Logout", Icons.logout, const Color.fromARGB(255, 241, 163, 65)),
   ];
+  
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -85,6 +86,18 @@ class MyHomePage extends StatelessWidget {
                   ),
                 ),
               ),
+              const Padding(
+                padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                // Widget Text untuk menampilkan tulisan dengan alignment center dan style yang sesuai
+                child: Text(
+                  'Here is a wonderland for Books lover where you can do multiple fun activities across the website', // Text yang menandakan toko
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               // Grid layout
               GridView.count(
                 // Container pada card kita.
@@ -99,6 +112,7 @@ class MyHomePage extends StatelessWidget {
                   return NavCard(item);
                 }).toList(),
               ),
+              // Padding(padding: padding)
             ],
           ),
         ),
