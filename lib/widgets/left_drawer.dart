@@ -31,7 +31,8 @@ class LeftDrawer extends StatelessWidget {
                 ),
                 Padding(padding: EdgeInsets.all(10)),
                 Text(
-                  "Your trusted online library.",
+                  "Karya, Kata, Cerita dan Cinta",
+
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15,
@@ -80,7 +81,7 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
            ListTile(
-            leading: const Icon(Icons.draw_sharp),
+            leading: const Icon(Icons.forum_rounded),
             title: const Text('Forum'),
             // Bagian redirection ke MyHomePage
             onTap: () {
