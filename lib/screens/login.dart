@@ -12,12 +12,33 @@ import 'package:provider/provider.dart';
 class LoginApp extends StatelessWidget {
   const LoginApp({super.key});
 
+  MaterialColor createMaterialColor(Color color) {
+    final Map<int, Color> colorMap = {
+      50: color.withOpacity(0.1),
+      100: color.withOpacity(0.2),
+      200: color.withOpacity(0.3),
+      300: color.withOpacity(0.4),
+      400: color.withOpacity(0.5),
+      500: color.withOpacity(0.6),
+      600: color.withOpacity(0.7),
+      700: color.withOpacity(0.8),
+      800: color.withOpacity(0.9),
+      900: color.withOpacity(1.0),
+    };
+
+    return MaterialColor(color.value, colorMap);
+  }
+
   @override
   Widget build(BuildContext context) {
+    Color primaryColor = Color(0xFF011627);
+
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Login',
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+        useMaterial3: true,
       ),
       home: const LoginPage(),
     );
@@ -40,7 +61,10 @@ class _LoginPageState extends State<LoginPage> {
     final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text(
+          'Login',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),

@@ -5,10 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-// import 'package:sylladex_mobile/screens/menu.dart';
-import 'package:nawalapatra_mobile/widgets/left_drawer.dart';
 import 'package:nawalapatra_mobile/library/bookreq_list.dart';
-// import 'package:sylladex_mobile/widgets/item_card.dart';
 
 class BookReqFormPage extends StatefulWidget {
   const BookReqFormPage({super.key});
@@ -35,6 +32,7 @@ class _BookReqPageState extends State<BookReqFormPage> {
         title: const Center(
           child: Text(
             'Book Request Form',
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         // backgroundColor: const Color(0xff3e2f48),
@@ -121,10 +119,10 @@ class _BookReqPageState extends State<BookReqFormPage> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(const Color(0xff3e2f48)),
-                  ),
+                  // style: ButtonStyle(
+                  //   backgroundColor:
+                  //       MaterialStateProperty.all(const Color(0xFF011627)),
+                  // ),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       // Kirim ke Django dan tunggu respons
@@ -159,7 +157,7 @@ class _BookReqPageState extends State<BookReqFormPage> {
                   },
                   child: const Text(
                     "Save",
-                    style: TextStyle(color: Colors.white),
+                    // style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
