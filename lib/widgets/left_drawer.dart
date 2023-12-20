@@ -97,6 +97,7 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
+          if (request.loggedIn)... [
            ListTile(
             leading: const Icon(Icons.forum_rounded),
             title: const Text('Forum'),
@@ -109,6 +110,7 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
+            ]
           if (request.loggedIn)... [
             ListTile(
             leading: const Icon(Icons.bookmark_rounded),
