@@ -168,7 +168,7 @@ class _ReqPageState extends State<BookReqlistPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Book Requests',
+                            'Library Requests',
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,

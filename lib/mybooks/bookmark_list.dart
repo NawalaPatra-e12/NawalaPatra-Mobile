@@ -101,8 +101,46 @@ class _ProductPageState extends State<BookmarkPage> {
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('NawalaPatra'),
+      // appBar: AppBar(
+      //   title: const Text('NawalaPatra'),
+      // ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBar(
+          backgroundColor: const Color(0xFF011627),
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFF2EC4B6),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFE71D36),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFFF9F1C),
+              ),
+              const SizedBox(width: 20), // Adjust the space between rectangles
+              const Text(
+                'NawalaPatra',
+                style: TextStyle(
+                  fontFamily: 'Kidstock',
+                  color: Colors.white, // Change title text color as needed
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       drawer: const LeftDrawer(),
       body: FutureBuilder(
@@ -160,187 +198,207 @@ class _ProductPageState extends State<BookmarkPage> {
                       itemCount: snapshot.data!.length,
                       itemBuilder: (_, index) => Padding(
                         padding: const EdgeInsets.all(20.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Tampilkan popup detail buku
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return StatefulBuilder(
-                                  builder: (BuildContext context,
-                                      StateSetter setState) {
-                                    TextEditingController reviewController =
-                                        TextEditingController(
-                                            text: snapshot.data![index].review);
-                                    return SingleChildScrollView(
-                                      child: Container(
-                                        padding: EdgeInsets.all(20),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            // Gambar ditengah
-                                            Container(
-                                              width: 65,
-                                              height: 100,
-                                              child: Image.network(
-                                                "${snapshot.data![index].book.imageUrl}",
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 20),
-                                            Text(
-                                              "${snapshot.data![index].book.title}",
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                fontSize: 22.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              "Author: ${snapshot.data![index].book.author.isEmpty ? 'Unknown' : snapshot.data![index].book.author}",
-                                              style: const TextStyle(
-                                                fontSize: 16.0,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              "Category: ${snapshot.data![index].book.category}",
-                                              style: const TextStyle(
-                                                fontSize: 16.0,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              "Review: ${snapshot.data![index].review.isNotEmpty ? snapshot.data![index].review : 'Belum ada review'}",
-                                              style: const TextStyle(
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 20),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('Close'),
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    primary: Colors.blue,
-                                                  ),
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              // Tampilkan popup detail buku
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return StatefulBuilder(
+                                    builder: (BuildContext context,
+                                        StateSetter setState) {
+                                      TextEditingController reviewController =
+                                          TextEditingController(
+                                              text:
+                                                  snapshot.data![index].review);
+                                      return SingleChildScrollView(
+                                        child: Container(
+                                          padding: EdgeInsets.all(20),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              // Gambar ditengah
+                                              Container(
+                                                width: 65,
+                                                height: 100,
+                                                child: Image.network(
+                                                  "${snapshot.data![index].book.imageUrl}",
+                                                  fit: BoxFit.cover,
                                                 ),
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    _showReviewForm(
-                                                      context,
-                                                      setState,
-                                                      reviewController,
-                                                      snapshot.data![index].pk,
-                                                      snapshot.data!,
-                                                      index,
-                                                    );
-                                                  },
-                                                  child: Text(
-                                                    '${snapshot.data![index].review.isNotEmpty ? 'Edit Review' : 'Add Review'}',
-                                                  ),
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    primary: Colors.blue,
-                                                  ),
+                                              ),
+                                              const SizedBox(height: 20),
+                                              Text(
+                                                "${snapshot.data![index].book.title}",
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  fontSize: 22.0,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
-                                                ElevatedButton(
-                                                  onPressed: () async {
-                                                    var url = Uri.parse(
-                                                        'https://nawalapatra.pythonanywhere.com/mybooks/remove_bookmark/');
-                                                    var requestRemove =
-                                                        await http.Request(
-                                                            "DELETE", url);
-                                                    requestRemove.body =
-                                                        jsonEncode({
-                                                      "id": snapshot
-                                                          .data![index].pk,
-                                                    });
-                                                    final response =
-                                                        await requestRemove
-                                                            .send();
-                                                    if (response.statusCode ==
-                                                        200) {
-                                                      Navigator.pushReplacement(
+                                              ),
+                                              const SizedBox(height: 10),
+                                              Text(
+                                                "Author: ${snapshot.data![index].book.author.isEmpty ? 'Unknown' : snapshot.data![index].book.author}",
+                                                style: const TextStyle(
+                                                  fontSize: 16.0,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 10),
+                                              Text(
+                                                "Category: ${snapshot.data![index].book.category}",
+                                                style: const TextStyle(
+                                                  fontSize: 16.0,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 10),
+                                              Text(
+                                                "Review: ${snapshot.data![index].review.isNotEmpty ? snapshot.data![index].review : 'Belum ada review'}",
+                                                style: const TextStyle(
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 20),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text('Close',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white)),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: Colors.blue,
+                                                    ),
+                                                  ),
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      _showReviewForm(
                                                         context,
-                                                        MaterialPageRoute(builder: (context) => BookmarkPage()),
+                                                        setState,
+                                                        reviewController,
+                                                        snapshot
+                                                            .data![index].pk,
+                                                        snapshot.data!,
+                                                        index,
                                                       );
-                                                      ScaffoldMessenger.of(
-                                                          context)
-                                                        ..hideCurrentSnackBar()
-                                                        ..showSnackBar(SnackBar(
-                                                          content: Text(
-                                                            'You have successfully removed "${snapshot.data![index].book.title}" !',
-                                                          ),
-                                                        ));
-                                                      // Navigator.pop(context);
-                                                    } else {
-                                                      // Handle error jika penghapusan gagal
-                                                      print(
-                                                          'Failed to remove. Status code: ${response.statusCode}');
-                                                    }
-                                                  },
-                                                  child: const Text('Remove'),
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    primary: Colors.red,
+                                                    },
+                                                    child: Text(
+                                                      '${snapshot.data![index].review.isNotEmpty ? 'Edit Review' : 'Add Review'}',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: Colors.blue,
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                                  ElevatedButton(
+                                                    onPressed: () async {
+                                                      var url = Uri.parse(
+                                                          'https://nawalapatra.pythonanywhere.com/mybooks/remove_bookmark/');
+                                                      var requestRemove =
+                                                          await http.Request(
+                                                              "DELETE", url);
+                                                      requestRemove.body =
+                                                          jsonEncode({
+                                                        "id": snapshot
+                                                            .data![index].pk,
+                                                      });
+                                                      final response =
+                                                          await requestRemove
+                                                              .send();
+                                                      if (response.statusCode ==
+                                                          200) {
+                                                        Navigator
+                                                            .pushReplacement(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  BookmarkPage()),
+                                                        );
+                                                        ScaffoldMessenger.of(
+                                                            context)
+                                                          ..hideCurrentSnackBar()
+                                                          ..showSnackBar(
+                                                              SnackBar(
+                                                            content: Text(
+                                                              'You have successfully removed "${snapshot.data![index].book.title}" !',
+                                                            ),
+                                                          ));
+                                                        // Navigator.pop(context);
+                                                      } else {
+                                                        // Handle error jika penghapusan gagal
+                                                        print(
+                                                            'Failed to remove. Status code: ${response.statusCode}');
+                                                      }
+                                                    },
+                                                    child: const Text(
+                                                      'Remove',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: Colors.red,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Left: Image
+                                Container(
+                                  width: 100,
+                                  child: Image.network(
+                                    "${snapshot.data![index].book.imageUrl}",
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                const SizedBox(width: 20),
+                                // Right: Text
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${snapshot.data![index].book.title}",
+                                        style: const TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    );
-                                  },
-                                );
-                              },
-                            );
-                          },
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Left: Image
-                              Container(
-                                width: 100,
-                                child: Image.network(
-                                  "${snapshot.data![index].book.imageUrl}",
-                                  fit: BoxFit.cover,
+                                      const SizedBox(height: 10),
+                                      Text(
+                                          "${snapshot.data![index].book.author.isEmpty ? 'Unknown Author' : snapshot.data![index].book.author}"),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                          "${snapshot.data![index].book.category}"),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              const SizedBox(width: 20),
-                              // Right: Text
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${snapshot.data![index].book.title}",
-                                      style: const TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                        "${snapshot.data![index].book.author.isEmpty ? 'Unknown Author' : snapshot.data![index].book.author}"),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                        "${snapshot.data![index].book.category}"),
-                                  ],
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -421,7 +479,10 @@ void _showReviewForm(
                       'Failed to add/edit review. Status code: ${response.statusCode}');
                 }
               },
-              child: const Text('Submit'),
+              child: const Text(
+                'Submit',
+                style: TextStyle(color: Colors.white),
+              ),
               style: ElevatedButton.styleFrom(
                 primary: Colors.blue,
               ),
@@ -431,7 +492,10 @@ void _showReviewForm(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Cancel'),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.white),
+              ),
               style: ElevatedButton.styleFrom(
                 primary: Colors.blue,
               ),
