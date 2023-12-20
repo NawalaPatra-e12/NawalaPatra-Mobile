@@ -7,10 +7,14 @@ class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
 
   final List<NavItem> items = [
-    NavItem("Library", Icons.library_books, const Color(0xff7f5478)),
-    NavItem("Writers Jam", Icons.draw_sharp, const Color(0xff7f5478)),
-    NavItem("Logout", Icons.logout, const Color(0xff7f5478)),
+    NavItem("Library", Icons.library_books, const Color.fromARGB(255, 97, 193, 181)),
+    NavItem("Writers Jam", Icons.draw_sharp, const Color.fromARGB(255, 241, 163, 65)),
+    NavItem("Leaderboard", Icons.bar_chart_rounded, const Color.fromARGB(255, 212, 55, 62)),
+    NavItem("Forum", Icons.forum_rounded, const Color.fromARGB(255, 212, 55, 62)),
+    NavItem("MyBooks", Icons.bookmark_rounded, const Color.fromARGB(255, 97, 193, 181)),
+    NavItem("Logout", Icons.logout, const Color.fromARGB(255, 241, 163, 65)),
   ];
+  
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -24,12 +28,43 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'NawalaPatra',
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBar(
+          backgroundColor: const Color(0xFF011627),
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFF2EC4B6),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFE71D36),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFFF9F1C),
+              ),
+              const SizedBox(width: 20), // Adjust the space between rectangles
+              const Text(
+                'NawalaPatra',
+                style: TextStyle(
+                  fontFamily: 'Kidstock',
+                  color: Colors.white, // Change title text color as needed
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
-        backgroundColor: const Color(0xff3e2f48), //added colour for appbar!
-        foregroundColor: Colors.white,
       ),
       drawer: const LeftDrawer(),
       body: SingleChildScrollView(
@@ -51,6 +86,18 @@ class MyHomePage extends StatelessWidget {
                   ),
                 ),
               ),
+              const Padding(
+                padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                // Widget Text untuk menampilkan tulisan dengan alignment center dan style yang sesuai
+                child: Text(
+                  'Here is a wonderland for Books lover where you can do multiple fun activities across the website', // Text yang menandakan toko
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               // Grid layout
               GridView.count(
                 // Container pada card kita.
@@ -65,6 +112,7 @@ class MyHomePage extends StatelessWidget {
                   return NavCard(item);
                 }).toList(),
               ),
+              // Padding(padding: padding)
             ],
           ),
         ),

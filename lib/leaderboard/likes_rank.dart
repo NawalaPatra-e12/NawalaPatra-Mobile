@@ -6,6 +6,7 @@ import 'package:nawalapatra_mobile/widgets/left_drawer.dart';
 import 'package:nawalapatra_mobile/widgets/nav_bottom.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:nawalapatra_mobile/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String urlToParse = 'https://nawalapatra.pythonanywhere.com/leaderboard/json';
@@ -52,7 +53,6 @@ class _LikePageState extends State<LeaderPage> {
     return books;
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -76,7 +76,6 @@ class _LikePageState extends State<LeaderPage> {
     updateUrlToParse(selectedOption);
   }
 
-
   Future<void> updateUrlToParse(String newOption) async {
     // Update urlToParse based on the selected option
     setState(() {
@@ -84,19 +83,19 @@ class _LikePageState extends State<LeaderPage> {
         urlToParse = 'https://nawalapatra.pythonanywhere.com/leaderboard/json';
       } else if (newOption == 'Literature & Fiction') {
         urlToParse =
-        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/1/";
+            "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/1/";
       } else if (newOption == 'Mystery, Thriller & Suspense') {
         urlToParse =
-        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/2/";
+            "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/2/";
       } else if (newOption == 'Religion & Spirituality') {
         urlToParse =
-        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/3/";
+            "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/3/";
       } else if (newOption == 'Romance') {
         urlToParse =
-        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/4/";
+            "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/4/";
       } else if (newOption == 'Science Fiction & Fantasy') {
         urlToParse =
-        "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/5/";
+            "https://nawalapatra.pythonanywhere.com/leaderboard/filter-json/5/";
       }
     });
     // Store the selected dropdown value in SharedPreferences
@@ -104,7 +103,8 @@ class _LikePageState extends State<LeaderPage> {
   }
 
   Future<void> increaseBookRate(int bookId) async {
-    var url = Uri.parse('https://nawalapatra.pythonanywhere.com/leaderboard/rate_button');
+    var url = Uri.parse(
+        'https://nawalapatra.pythonanywhere.com/leaderboard/rate_button');
     var response = await http.post(url, body: {'book_id': bookId.toString()});
 
     if (response.statusCode == 200) {
@@ -114,16 +114,52 @@ class _LikePageState extends State<LeaderPage> {
     }
   }
 
-
-
   // String urlToParse = '';
 
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('NawalaPatra'),
+      // appBar: AppBar(
+      //   title: const Text('NawalaPatra'),
+      // ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBar(
+          backgroundColor: const Color(0xFF011627),
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFF2EC4B6),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFE71D36),
+              ),
+              Container(
+                width: 20,
+                height: 60,
+                color: const Color(0xFFFF9F1C),
+              ),
+              const SizedBox(width: 20), // Adjust the space between rectangles
+              const Text(
+                'NawalaPatra',
+                style: TextStyle(
+                  fontFamily: 'Kidstock',
+                  color: Colors.white, // Change title text color as needed
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       drawer: const LeftDrawer(),
       body: FutureBuilder(
@@ -145,8 +181,7 @@ class _LikePageState extends State<LeaderPage> {
                     const SizedBox(height: 10),
                     Text(
                       "Tidak ada data produk.",
-                      style:
-                      TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                      style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
                     ),
                     SizedBox(height: 8),
                   ],
@@ -185,7 +220,7 @@ class _LikePageState extends State<LeaderPage> {
                               }
                             },
                             items: options.map<DropdownMenuItem<String>>(
-                                  (String value) {
+                              (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -202,8 +237,7 @@ class _LikePageState extends State<LeaderPage> {
                           itemBuilder: (_, index) => Padding(
                               padding: const EdgeInsets.all(20.0),
                               child: Row(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // Left: Image
                                   Container(
@@ -221,7 +255,7 @@ class _LikePageState extends State<LeaderPage> {
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "${snapshot.data![index].fields.title}",
@@ -240,64 +274,54 @@ class _LikePageState extends State<LeaderPage> {
                                         Text(
                                           "Likes: ${snapshot.data![index].fields.rate}",
                                           style: const TextStyle(
-                                          fontSize: 15.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.redAccent,
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.redAccent,
+                                          ),
                                         ),
-                                      ),
-
-                                        ],
-
+                                      ],
                                     ),
                                   ),
-            if (request.loggedIn) ...[
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () async {
-                  // print("${index}");
-                  int book_id =
-                      snapshot.data![index].pk;
+                                  if (request.loggedIn) ...[
+                                    const SizedBox(height: 10),
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        int book_id = snapshot.data![index].pk;
 
-                  final response = await request.postJson(
-                      'https://nawalapatra.pythonanywhere.com/leaderboard/rate-button-flutter',
-                      jsonEncode(<String, int>{
-                        'index': book_id,
-                      })
-                    // You can include headers or other necessary data here
-                  );
-                  if (response['status'] ==
-                      'success') {
-                    setState(() {
-                      fetchBook(urlToParse); // Refresh the forum list after deletion
-                    });
-                    ScaffoldMessenger.of(context)
-                      ..hideCurrentSnackBar()
-                      ..showSnackBar(SnackBar(
-                          content: Text(
-                              'You Like "${snapshot.data![index].fields.title}" So Much!!!')));
-                  } else {
-                    // Handle other status codes (if needed)
-                    print(
-                        'Failed to bookmark. Status code: ${response.statusCode}');
-                  }
-                },
-                child: Icon(
-                  Icons.favorite,
-                  color: Colors.pink,
-                  size: 24.0,
-                ),
-
-              ),
-
-            ]
+                                        final response = await request.postJson(
+                                            'https://nawalapatra.pythonanywhere.com/leaderboard/rate-button-flutter',
+                                            jsonEncode(<String, int>{
+                                              'index': book_id,
+                                            })
+                                            // You can include headers or other necessary data here
+                                            );
+                                        if (response['status'] == 'success') {
+                                          setState(() {
+                                            fetchBook(
+                                                urlToParse); // Refresh the forum list after deletion
+                                          });
+                                          ScaffoldMessenger.of(context)
+                                            ..hideCurrentSnackBar()
+                                            ..showSnackBar(SnackBar(
+                                                content: Text(
+                                                    'You Like "${snapshot.data![index].fields.title}" So Much!!!')));
+                                        } else {
+                                          // Handle other status codes (if needed)
+                                          print(
+                                              'Failed to bookmark. Status code: ${response.statusCode}');
+                                        }
+                                      },
+                                      child: Icon(
+                                        Icons.favorite,
+                                        color: Colors.pink,
+                                        size: 24.0,
+                                      ),
+                                    ),
+                                  ]
                                 ],
-
-
-
-
-
                               ))),
-                    )],
+                    )
+                  ],
                 );
               }
             }
