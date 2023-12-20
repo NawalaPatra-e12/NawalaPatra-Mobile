@@ -6,6 +6,7 @@ import 'package:nawalapatra_mobile/widgets/left_drawer.dart';
 import 'package:nawalapatra_mobile/widgets/nav_bottom.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:nawalapatra_mobile/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String urlToParse = 'https://nawalapatra.pythonanywhere.com/leaderboard/json';
@@ -155,6 +156,7 @@ class _LikePageState extends State<LeaderPage> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Column(
@@ -254,7 +256,6 @@ class _LikePageState extends State<LeaderPage> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () async {
-                  // print("${index}");
                   int book_id =
                       snapshot.data![index].pk;
 

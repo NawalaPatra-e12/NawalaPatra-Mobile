@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner:
               false, // Set debugShowCheckedModeBanner to false
-          title: 'Flutter Demo',
+          title: 'NawalaPatra',
           theme: ThemeData(
             // This is the theme of your application.
             //
