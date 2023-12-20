@@ -32,7 +32,8 @@ class LeftDrawer extends StatelessWidget {
                 ),
                 Padding(padding: EdgeInsets.all(10)),
                 Text(
-                  "Your trusted online library.",
+                  "Karya, Kata, Cerita dan Cinta",
+
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15,
