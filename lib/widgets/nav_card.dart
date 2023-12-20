@@ -8,6 +8,7 @@ import 'package:nawalapatra_mobile/library/book_list.dart';
 import 'package:nawalapatra_mobile/writersjam/writer.dart';
 import 'package:nawalapatra_mobile/leaderboard/likes_rank.dart';
 import 'package:nawalapatra_mobile/forum/forum.dart';
+import 'package:nawalapatra_mobile/mybooks/bookmark_list.dart';
 
 class NavItem {
   final String name;
@@ -73,6 +74,11 @@ class NavCard extends StatelessWidget {
           if (item.name == "Forum") {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const ForumPage()));
+          }
+
+          if (item.name == "MyBooks") {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const BookmarkPage()));
           }
         },
         child: Container(

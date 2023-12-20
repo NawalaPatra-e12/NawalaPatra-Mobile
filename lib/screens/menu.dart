@@ -11,6 +11,7 @@ class MyHomePage extends StatelessWidget {
     NavItem("Writers Jam", Icons.draw_sharp, const Color(0xff7f5478)),
     NavItem("Leaderboard", Icons.bar_chart_rounded, const Color(0xff7f5478)),
     NavItem("Forum", Icons.forum_rounded, const Color(0xff7f5478)),
+    NavItem("MyBooks", Icons.bookmark_rounded, const Color(0xff7f5478)),
     NavItem("Logout", Icons.logout, const Color(0xff7f5478)),
   ];
 
