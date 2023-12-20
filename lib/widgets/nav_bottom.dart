@@ -7,6 +7,7 @@ import 'package:nawalapatra_mobile/forum/forum.dart';
 import 'package:nawalapatra_mobile/leaderboard/likes_rank.dart';
 // import 'package:nawalapatra_mobile/screens/login.dart';
 
+
 class NavigationBarApp extends StatelessWidget {
   // NavigationDestinationLabelBehavior labelBehavior = NavigationDestinationLabelBehavior.onlyShowSelected;
 
@@ -47,3 +48,4 @@ class NavigationBarApp extends StatelessWidget {
     );
   }
 }
+
