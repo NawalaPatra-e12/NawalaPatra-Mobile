@@ -71,7 +71,7 @@ class NavCard extends StatelessWidget {
                   content: Text('Mohon login terlebih dahulu'),
                   actions: <Widget>[
                     TextButton(
-                      child: Text('Ok'),
+                      child: Text('Sign In'),
                       onPressed: () {
                         Navigator.pushReplacement(
                         context,
@@ -81,7 +81,7 @@ class NavCard extends StatelessWidget {
                       },
                     ),
                     TextButton(
-                      child: Text('Back'),
+                      child: Text('Ok'),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -102,9 +102,32 @@ class NavCard extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const LeaderPage()));
           }
 
-          if (item.name == "Forum") {
+          // if (item.name == "Forum") {
+          //   Navigator.push(context,
+          //       MaterialPageRoute(builder: (context) => const ForumPage()));
+          // }
+
+          if (request.loggedIn && item.name == "Forum"){
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const ForumPage()));
+          } else if (item.name == "Forum"){
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Login Required'),
+                  content: Text('Mohon login terlebih dahulu'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
           }
 
           if (request.loggedIn && item.name == "MyBooks"){
