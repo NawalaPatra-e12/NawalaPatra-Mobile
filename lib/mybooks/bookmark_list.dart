@@ -9,7 +9,7 @@ import 'package:nawalapatra_mobile/widgets/nav_bottom.dart';
 import 'package:http/http.dart' as http;
 
 String urlToParse =
-    "https://nawalapatra.pythonanywhere.com/mybooks/get_bookmark_json/?category_filter=0";
+    "https://nawalapatra.pythonanywhere.com/mybooks/get_bookmark_flutter/?category_filter=0";
 
 class BookmarkPage extends StatefulWidget {
   const BookmarkPage({Key? key}) : super(key: key);
@@ -75,19 +75,19 @@ class _ProductPageState extends State<BookmarkPage> {
     setState(() {
       if (newOption == 'All') {
         urlToParse =
-            'https://nawalapatra.pythonanywhere.com/mybooks/get_bookmark_json/?category_filter=0';
+            'https://nawalapatra.pythonanywhere.com/mybooks/get_bookmark_flutter/?category_filter=0';
       } else if (newOption == 'Literature & Fiction') {
         urlToParse =
-            "https://nawalapatra.pythonanywhere.com/mybooks/get_bookmark_json/?category_filter=1";
+            "https://nawalapatra.pythonanywhere.com/mybooks/get_bookmark_flutter/?category_filter=1";
       } else if (newOption == 'Mystery, Thriller & Suspense') {
         urlToParse =
-            "https://nawalapatra.pythonanywhere.com/mybooks/get_bookmark_json/?category_filter=2";
+            "https://nawalapatra.pythonanywhere.com/mybooks/get_bookmark_flutter/?category_filter=2";
       } else if (newOption == 'Religion & Spirituality') {
         urlToParse =
-            "https://nawalapatra.pythonanywhere.com/mybooks/get_bookmark_json/?category_filter=3";
+            "https://nawalapatra.pythonanywhere.com/mybooks/get_bookmark_flutter/?category_filter=3";
       } else if (newOption == 'Romance') {
         urlToParse =
-            "https://nawalapatra.pythonanywhere.com/mybooks/get_bookmark_json/?category_filter=4";
+            "https://nawalapatra.pythonanywhere.com/mybooks/get_bookmark_flutter/?category_filter=4";
       } else if (newOption == 'Science Fiction & Fantasy') {
         urlToParse =
             "https://nawalapatra.pythonanywhere.com/mybooks/get_bookmark_json/?category_filter=5";
@@ -156,92 +156,196 @@ class _ProductPageState extends State<BookmarkPage> {
                     ),
                   ),
                   Expanded(
-                      child: ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (_, index) => Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Left: Image
-                                    Container(
-                                      width: 100,
-                                      child: Image.network(
-                                        "${snapshot.data![index].book.imageUrl}",
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-
-                                    const SizedBox(height: 10),
-                                    const SizedBox(width: 20),
-
-                                    // Right: Text
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "${snapshot.data![index].book.title}",
-                                            style: const TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.bold,
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (_, index) => Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            // Tampilkan popup detail buku
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return StatefulBuilder(
+                                  builder: (BuildContext context,
+                                      StateSetter setState) {
+                                    TextEditingController reviewController =
+                                        TextEditingController(
+                                            text: snapshot.data![index].review);
+                                    return SingleChildScrollView(
+                                      child: Container(
+                                        padding: EdgeInsets.all(20),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            // Gambar ditengah
+                                            Container(
+                                              width: 65,
+                                              height: 100,
+                                              child: Image.network(
+                                                "${snapshot.data![index].book.imageUrl}",
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                              "${snapshot.data![index].book.author}"),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                              "${snapshot.data![index].book.category}"),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 200,
-                                      child: ElevatedButton(
-                                        onPressed: () async {
-                                          var url = Uri.parse(
-                                              'https://nawalapatra.pythonanywhere.com/mybooks/remove_bookmark/');
-                                          var requestRemove =
-                                              await http.Request(
-                                            "DELETE",
-                                            url,
-                                          );
-                                          requestRemove.body = jsonEncode(
-                                              {"id": snapshot.data![index].pk});
-                                          final response =
-                                              await requestRemove.send();
-                                          if (response.statusCode == 200) {
-                                            // Jika penghapusan berhasil, perbarui state dengan memanggil ulang fetchBookmark
-                                            setState(() {
-                                              // Anda juga dapat melempar parameter baru ke fungsi fetchBookmark
-                                              // jika diperlukan untuk pembaruan data yang lebih spesifik
-                                              fetchBookmark(
-                                                  urlToParse, request);
-                                            });
-                                            ScaffoldMessenger.of(context)
-                                              ..hideCurrentSnackBar()
-                                              ..showSnackBar(SnackBar(
-                                                content: Text(
-                                                    'You have successfully removed "${snapshot.data![index].book.title}" !'),
-                                              ));
-                                          } else {
-                                            // Handle error jika penghapusan gagal
-                                            print(
-                                                'Failed to remove. Status code: ${response.statusCode}');
-                                          }
-                                        },
-                                        child: const Text('Remove'),
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Colors
-                                              .red, // You can change the color according to your UI
+                                            const SizedBox(height: 20),
+                                            Text(
+                                              "${snapshot.data![index].book.title}",
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                fontSize: 22.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              "Author: ${snapshot.data![index].book.author.isEmpty ? 'Unknown' : snapshot.data![index].book.author}",
+                                              style: const TextStyle(
+                                                fontSize: 16.0,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              "Category: ${snapshot.data![index].book.category}",
+                                              style: const TextStyle(
+                                                fontSize: 16.0,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              "Review: ${snapshot.data![index].review.isNotEmpty ? snapshot.data![index].review : 'Belum ada review'}",
+                                              style: const TextStyle(
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 20),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text('Close'),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Colors.blue,
+                                                  ),
+                                                ),
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    _showReviewForm(
+                                                      context,
+                                                      setState,
+                                                      reviewController,
+                                                      snapshot.data![index].pk,
+                                                      snapshot.data!,
+                                                      index,
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                    '${snapshot.data![index].review.isNotEmpty ? 'Edit Review' : 'Add Review'}',
+                                                  ),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Colors.blue,
+                                                  ),
+                                                ),
+                                                ElevatedButton(
+                                                  onPressed: () async {
+                                                    var url = Uri.parse(
+                                                        'https://nawalapatra.pythonanywhere.com/mybooks/remove_bookmark/');
+                                                    var requestRemove =
+                                                        await http.Request(
+                                                            "DELETE", url);
+                                                    requestRemove.body =
+                                                        jsonEncode({
+                                                      "id": snapshot
+                                                          .data![index].pk,
+                                                    });
+                                                    final response =
+                                                        await requestRemove
+                                                            .send();
+                                                    if (response.statusCode ==
+                                                        200) {
+                                                      Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(builder: (context) => BookmarkPage()),
+                                                      );
+                                                      ScaffoldMessenger.of(
+                                                          context)
+                                                        ..hideCurrentSnackBar()
+                                                        ..showSnackBar(SnackBar(
+                                                          content: Text(
+                                                            'You have successfully removed "${snapshot.data![index].book.title}" !',
+                                                          ),
+                                                        ));
+                                                      // Navigator.pop(context);
+                                                    } else {
+                                                      // Handle error jika penghapusan gagal
+                                                      print(
+                                                          'Failed to remove. Status code: ${response.statusCode}');
+                                                    }
+                                                  },
+                                                  child: const Text('Remove'),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Colors.red,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
                                       ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Left: Image
+                              Container(
+                                width: 100,
+                                child: Image.network(
+                                  "${snapshot.data![index].book.imageUrl}",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              const SizedBox(width: 20),
+                              // Right: Text
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${snapshot.data![index].book.title}",
+                                      style: const TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                        "${snapshot.data![index].book.author.isEmpty ? 'Unknown Author' : snapshot.data![index].book.author}"),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                        "${snapshot.data![index].book.category}"),
                                   ],
                                 ),
-                              ))),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               );
             }
@@ -249,4 +353,92 @@ class _ProductPageState extends State<BookmarkPage> {
       bottomNavigationBar: NavigationBarApp(),
     );
   }
+}
+
+void _showReviewForm(
+  BuildContext context,
+  StateSetter setState,
+  TextEditingController reviewController,
+  int bookId,
+  List<Result> snapshotData,
+  int snapshotIndex,
+) {
+  showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) {
+      return Container(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Add/Edit Review',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            // Formulir Review
+            TextField(
+              controller: reviewController,
+              maxLines: 5,
+              decoration: InputDecoration(
+                labelText: 'Review',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () async {
+                // Kirim review ke server menggunakan metode POST
+                // Anda dapat menyesuaikan URL dan parameter sesuai kebutuhan
+                var url = Uri.parse(
+                    'https://nawalapatra.pythonanywhere.com/mybooks/add_review_ajax/${bookId}/');
+                var response = await http.post(
+                  url,
+                  body: {
+                    'review': reviewController.text,
+                  },
+                );
+
+                if (response.statusCode == 201) {
+                  // Simpan nilai yang akan diperbarui dalam variabel lokal
+                  var updatedReview = reviewController.text;
+
+                  // Jika berhasil, perbarui tampilan modal dan tutup modal
+                  setState(() {
+                    // Gunakan nilai yang disimpan untuk mengupdate state
+                    snapshotData[snapshotIndex].review = updatedReview;
+                  });
+
+                  Navigator.pop(context);
+                } else {
+                  // Handle kesalahan jika POST gagal
+                  print(
+                      'Failed to add/edit review. Status code: ${response.statusCode}');
+                }
+              },
+              child: const Text('Submit'),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+              ),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }

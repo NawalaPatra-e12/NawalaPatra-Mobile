@@ -52,7 +52,7 @@ class _StoryPageState extends State<StoryListPage> {
 
     // melakukan decode response menjadi bentuk json
     var data = jsonDecode(utf8.decode(response.bodyBytes));
-
+    // print(data);
     // melakukan konversi data json menjadi object Product
     List<Item> list_product = [];
     for (var d in data) {

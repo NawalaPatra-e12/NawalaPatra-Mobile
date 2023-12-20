@@ -32,6 +32,7 @@ class LeftDrawer extends StatelessWidget {
                 Padding(padding: EdgeInsets.all(10)),
                 Text(
                   "Karya, Kata, Cerita dan Cinta",
+
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15,
@@ -44,7 +45,7 @@ class LeftDrawer extends StatelessWidget {
           ),
           // DO: Bagian routing
           ListTile(
-            leading: const Icon(Icons.home_outlined),
+            leading: const Icon(Icons.home),
             title: const Text('Home'),
             // Bagian redirection ke MyHomePage
             onTap: () {

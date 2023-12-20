@@ -7,7 +7,7 @@ class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
 
   final List<NavItem> items = [
-    NavItem("Library", Icons.checklist, const Color(0xff7f5478)),
+    NavItem("Library", Icons.library_books, const Color(0xff7f5478)),
     NavItem("Writers Jam", Icons.draw_sharp, const Color(0xff7f5478)),
     NavItem("Leaderboard", Icons.bar_chart_rounded, const Color(0xff7f5478)),
     NavItem("Forum", Icons.forum_rounded, const Color(0xff7f5478)),
@@ -45,7 +45,7 @@ class MyHomePage extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                 // Widget Text untuk menampilkan tulisan dengan alignment center dan style yang sesuai
                 child: Text(
-                  'NawalaPatra', // Text yang menandakan toko
+                  'Welcome to NawalaPatra!', // Text yang menandakan toko
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,

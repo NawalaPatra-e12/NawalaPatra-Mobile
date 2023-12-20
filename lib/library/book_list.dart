@@ -7,6 +7,7 @@ import 'package:nawalapatra_mobile/widgets/nav_bottom.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:nawalapatra_mobile/library/bookreq_list.dart';
 
 String urlParsing = 'https://nawalapatra.pythonanywhere.com/library/json';
 
@@ -110,6 +111,8 @@ class _ProductPageState extends State<BooklistPage> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
+    // print(request);
+    // print(request.jsonData);
     // String uname = "User";
 
     // if (request.loggedIn) {
@@ -221,6 +224,17 @@ class _ProductPageState extends State<BooklistPage> {
                                   },
                                 ).toList(),
                               ),
+                              const SizedBox(width: 20),
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BookReqlistPage(),
+                                        ));
+                                  },
+                                  child: Text("Book Requests")),
                             ],
                           ),
                         ],
@@ -281,6 +295,17 @@ class _ProductPageState extends State<BooklistPage> {
                                   },
                                 ).toList(),
                               ),
+                              const SizedBox(width: 20),
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BookReqlistPage(),
+                                        ));
+                                  },
+                                  child: Text("Book Requests")),
                             ],
                           ),
                         ],
