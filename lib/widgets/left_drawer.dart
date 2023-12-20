@@ -4,17 +4,19 @@ import 'package:nawalapatra_mobile/library/book_list.dart';
 import 'package:nawalapatra_mobile/writersjam/writer.dart';
 import 'package:nawalapatra_mobile/leaderboard/likes_rank.dart';
 import 'package:nawalapatra_mobile/forum/forum.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Drawer(
       child: ListView(
         children: [
           const DrawerHeader(
-            // Bagian drawer header
             decoration: BoxDecoration(
               color: Color(0xff3e2f48),
             ),
@@ -42,91 +44,69 @@ class LeftDrawer extends StatelessWidget {
               ],
             ),
           ),
-          // DO: Bagian routing
           ListTile(
             leading: const Icon(Icons.home),
             title: const Text('Home'),
-            // Bagian redirection ke MyHomePage
             onTap: () {
               Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MyHomePage(),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                ),
+              );
             },
           ),
           ListTile(
             leading: const Icon(Icons.library_books),
             title: const Text('Library'),
-            // Bagian redirection ke MyHomePage
             onTap: () {
               Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BooklistPage(),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BooklistPage(),
+                ),
+              );
             },
           ),
           ListTile(
             leading: const Icon(Icons.draw_sharp),
             title: const Text('Writers Jam'),
-            // Bagian redirection ke MyHomePage
             onTap: () {
               Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => StoryListPage(),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StoryListPage(),
+                ),
+              );
             },
           ),
-           ListTile(
-            leading: const Icon(Icons.draw_sharp),
-            title: const Text('Forum'),
-            // Bagian redirection ke MyHomePage
-            onTap: () {
-              Navigator.pushReplacement(
+          
+            ListTile(
+              leading: const Icon(Icons.draw_sharp),
+              title: const Text('Forum'),
+              
+              onTap: () {
+                if (request.loggedIn)
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ForumPage(),
-                  ));
-            },
-          ),
+                  ),
+                );
+              },
+            ),
           ListTile(
             leading: const Icon(Icons.bar_chart_rounded),
             title: const Text('Leaderboard'),
-            // Bagian redirection ke MyHomePage
             onTap: () {
               Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LeaderPage(),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LeaderPage(),
+                ),
+              );
             },
           ),
-          //
-          // ListTile(
-          //   leading: const Icon(Icons.checklist),
-          //   title: const Text('Lihat Item'),
-          //   // Bagian redirection ke ItemListPage
-          //   onTap: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => const ProductPage()),
-          //     );
-          //   },
-          // ),
-          // ListTile(
-          //   leading: const Icon(Icons.add_shopping_cart),
-          //   title: const Text('Tambah Item'),
-          //   // Bagian redirection ke ShopFormPage
-          //   onTap: () {
-          //     Navigator.pushReplacement(
-          //         context,
-          //         MaterialPageRoute(
-          //           builder: (context) => const ShopFormPage(),
-          //         ));
-          //   },
-          // ),
         ],
       ),
     );
