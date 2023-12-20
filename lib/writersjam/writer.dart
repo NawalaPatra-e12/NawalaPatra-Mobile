@@ -4,7 +4,7 @@ import 'package:nawalapatra_mobile/widgets/nav_bottom.dart';
 import 'package:nawalapatra_mobile/writersjam/book_rec.dart';
 import 'package:nawalapatra_mobile/writersjam/story_form.dart';
 import 'dart:convert';
-import 'package:nawalapatra_mobile/writersjam/writer_models.dart';
+import 'package:nawalapatra_mobile/models/writer_models.dart';
 import 'package:nawalapatra_mobile/widgets/left_drawer.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +14,6 @@ DateTime now = DateTime.now();
 DateTime startOfYear = DateTime(now.year, 1, 1);
 int weekOfYear = ((now.difference(startOfYear).inDays + startOfYear.weekday) / 7).ceil();
 int currentWeek = weekOfYear % 5;
-int weekNow = currentWeek + 2;
-// int promptNow = weekNow + 1;
 
 class Prompt {
   final int urutan;
@@ -68,7 +66,8 @@ class _StoryPageState extends State<StoryListPage> {
     final request = context.watch<CookieRequest>();
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Writers Jam'),
+          title: const Text('NawalaPatra'),
+          backgroundColor: const Color.fromARGB(255, 241, 163, 65),
         ),
         drawer: const LeftDrawer(),
         body: 
@@ -90,10 +89,7 @@ class _StoryPageState extends State<StoryListPage> {
                     ],
                   );
                 } else {
-                  
-                  // if(weekNow > 4) weekNow -= 5;
-                  // int promptNow = weekNow + 1;
-                  // if(promptNow > 4) promptNow = 4;
+
                   int promptNow = 0;
                   if(currentWeek == 0) promptNow = 3;
                   if(currentWeek == 1) promptNow = 4;
@@ -103,16 +99,30 @@ class _StoryPageState extends State<StoryListPage> {
                   return Column(
                     children: [
                       Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Writers Jam',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.normal,
+                              color: const Color.fromARGB(255, 6, 22, 38),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
                         padding: EdgeInsets.only(
                             left: 20.0,
-                            top: 20.0,
+                            top: 5.0,
                             right: 20.0,
                             bottom: 5.0,  // No padding at the bottom
                           ),
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                          color: Colors.orange.shade100,
+                          color: const Color.fromARGB(255, 6, 22, 38),
                           border: Border.all(
                             width: 1,
                           ),
@@ -125,20 +135,33 @@ class _StoryPageState extends State<StoryListPage> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.normal,
+                                color: Colors.white,
                               ),
                             ),
-                             Center(  // Center the text
+                            Align(
+                              alignment: Alignment.topCenter,
                               child: Text('${promptStory[promptNow].tema}',  
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
+                            //  Center(  // Center the text
+                            //   child: Text('${promptStory[promptNow].tema}',  
+                            //     style: TextStyle(
+                            //       fontSize: 20,
+                            //       fontWeight: FontWeight.bold,
+                            //       color: Colors.white,
+                            //     ),
+                            //   ),
+                            // ),
                             Text('Genre: ${promptStory[promptNow].genre}',
                              style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.normal,
+                                color: Colors.white,
                               ),
                               ),
                             const SizedBox(height: 10),
@@ -150,11 +173,16 @@ class _StoryPageState extends State<StoryListPage> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(20.0),
+                              padding: EdgeInsets.only(
+                                  left: 20.0,
+                                  top: 10.0,
+                                  right: 20.0,
+                                  bottom: 10.0,  // No padding at the bottom
+                                ),
                               child: Container(
                                 padding: const EdgeInsets.all(10.0),
                                 decoration: BoxDecoration(
-                                color: Colors.pink.shade50,
+                                color: const Color.fromARGB(255, 241, 163, 65),
                                 border: Border.all(
                                   // color: Colors.black,
                                   width: 1,
@@ -180,8 +208,23 @@ class _StoryPageState extends State<StoryListPage> {
                                           MaterialPageRoute(builder: (context) => StoryFormPage()),
                                         );
                                       },
-                                      child: Text('Submit Your Story'),
+                                      child: Center(
+                                        child: Text(
+                                          'Submit Your Story', 
+                                          style: TextStyle(fontSize: 13, color: Colors.black),
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(18.0),
+                                            side: BorderSide(color: Colors.blue)
+                                          )
+                                        )
+                                      ),
                                     )
+
                                   ] else ... [
                                   Text('Dont see the button? Please login first to join the fun!',
                                   style: TextStyle(
@@ -195,44 +238,64 @@ class _StoryPageState extends State<StoryListPage> {
                             )
                           ),
                         ),
-                        Expanded(
-                          child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Container(
-                                padding: const EdgeInsets.all(10.0),
-                                decoration: BoxDecoration(
-                                color: Colors.pink.shade50,
-                                border: Border.all(
-                                  // color: Colors.black,
-                                  width: 1,
+                          Expanded(
+                            child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: 20.0,
+                                  top: 10.0,
+                                  right: 20.0,
+                                  bottom: 10.0,  // No padding at the bottom
                                 ),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child : Column(
-                                children: [
-                                  Center(  // Center the text
-                                      child: Text(
-                                      'Here are some books you can use as a reference to add a lil spice to your imagination! ',
-                                      style: TextStyle(
-                                        fontSize: 13,
+                                child: Container(
+                                  padding: const EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                  color: const Color.fromARGB(255, 97, 193, 181),
+                                  border: Border.all(
+                                    // color: Colors.black,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child : Column(
+                                  children: [
+                                    Center(  // Center the text
+                                        child: Text(
+                                        'Here are some books you can use as a reference to add a lil spice to your imagination! ',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                        ),
                                       ),
-                                    ),
-                                    ),
-                                  const SizedBox(height: 10),
-                                  ElevatedButton(
+                                      ),
+                                    const SizedBox(height: 10),
+                                    ElevatedButton(
                                       onPressed: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(builder: (context) => BookRecommend()),
                                         );
                                       },
-                                      child: Text('Books Recommendation', style: TextStyle(fontSize: 13,)),
+                                      child: Center( 
+                                        child : Text(
+                                        'Books Recommendation', 
+                                        style: TextStyle(fontSize: 13, color: Colors.black),
+                                      )
+                                      ),
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(18.0),
+                                            side: BorderSide(color: Colors.blue)
+                                          )
+                                        )
+                                      ),
                                     )
-                                ]
+
+                                  ]
+                                )
                               )
-                            )
-                           ),
-                         ),
+                            ),
+                          ),
                        ],
                       ),
                   Expanded(
@@ -243,12 +306,13 @@ class _StoryPageState extends State<StoryListPage> {
                           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                           padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey,
-                            width: 1,
+                            border: Border.all(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                            color: Colors.yellow.shade50,
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center, // Change to center
@@ -281,7 +345,7 @@ class _StoryPageState extends State<StoryListPage> {
                             ],
                           ),
                         ))
-                      )
+                      )  //penutup
                     ]
                   );
                 }
