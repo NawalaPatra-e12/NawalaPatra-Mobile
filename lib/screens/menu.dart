@@ -10,6 +10,7 @@ class MyHomePage extends StatelessWidget {
     NavItem("Library", Icons.checklist, const Color(0xff7f5478)),
     NavItem("Writers Jam", Icons.draw_sharp, const Color(0xff7f5478)),
     NavItem("Leaderboard", Icons.bar_chart_rounded, const Color(0xff7f5478)),
+    NavItem("Forum", Icons.forum_rounded, const Color(0xff7f5478)),
     NavItem("Logout", Icons.logout, const Color(0xff7f5478)),
   ];
 
@@ -44,7 +45,7 @@ class MyHomePage extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                 // Widget Text untuk menampilkan tulisan dengan alignment center dan style yang sesuai
                 child: Text(
-                  'Captchalogue Deck', // Text yang menandakan toko
+                  'NawalaPatra', // Text yang menandakan toko
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
