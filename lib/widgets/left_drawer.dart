@@ -96,7 +96,6 @@ class LeftDrawer extends StatelessWidget {
           ),
            ListTile(
             leading: const Icon(Icons.forum_rounded),
-            leading: const Icon(Icons.forum),
             title: const Text('Forum'),
             // Bagian redirection ke MyHomePage
             onTap: () {
